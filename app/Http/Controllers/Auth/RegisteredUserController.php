@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+use function Psy\debug;
+
 class RegisteredUserController extends Controller
 {
     /**
@@ -40,43 +42,32 @@ class RegisteredUserController extends Controller
             'password' => 'required|string|confirmed|min:8',
         ]);
 
-        if(!empty($request->usertype)){
-            $userType = $request->usertype;
-        }else{
-            $userType = 'user';
-        }
+        $userType = $request->usertype ?? 'user';
+        $designation = $request->designation ?? null;
+        $contactNumber = $request->phone_number ?? null;
 
-        if(!empty($request->designation)){
-            $designation = $request->designation;
-        }else{
-            $designation = Null;
-        }
-
-
-        Auth::login($user = User::create([
+        $user = User::create([
             'username' => $request->username,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'contact_number' => $request->phone_number,
+            'contact_number' => $contactNumber,
             'user_type' => $userType,
-            'display_name' => $request->first_name." ".$request->last_name,
+            'display_name' => $request->first_name . ' ' . $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'designation' => $request->designation,
-        ]));
+            'designation' => $designation,
+        ]);
 
+        Auth::login($user);
         event(new Registered($user));
 
-        if(!empty($userType)){
-            $user->assignRole($userType);
-        }else{
-            $user->assignRole('user');
-        }
+        $user->assignRole($userType);
 
-        if($request->register === 'user_register'){
+        if ($request->register === 'user_register') {
             return redirect(RouteServiceProvider::FRONTEND);
-        }else{
+        } else {
             return redirect(route('home'));
         }
     }
+
 }

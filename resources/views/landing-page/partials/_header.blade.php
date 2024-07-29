@@ -215,11 +215,16 @@
                                        <span class="ms-2">
                                           @php
                                           $user = auth()->user();
+                                          $wallet_amount=0;
                                           $wallet = $user->wallet;
-                                          $wallet_amount=  $wallet->amount;
+                                          if ($wallet === null) {
+                                             $wallet = 0;
+                                          }else{
+                                             $wallet_amount = $wallet->amount;
+                                          }
                                           @endphp
                                           {{__('messages.wallet_balance')}}:
-                                          <span class="text-primary">{{getPriceFormat($wallet_amount)}}</span>
+                                          <span class="text-primary">{{getPriceFormat($wallet_amount ?? 0)}}</span>
                                        </span>
                                     </span>
                                  </li>

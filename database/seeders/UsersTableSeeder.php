@@ -43,6 +43,7 @@ class UsersTableSeeder extends Seeder
                 'phone_number' => $this->faker->unique()->phoneNumber(),
                 'password' => bcrypt('12345678'),
                 'user_type' => 'admin',
+                'user_image' => 'uploads/users/default.png',
                 'contact_number' => '9876543210',
                 'country_id' => 38,
                 'state_id' => 674,
