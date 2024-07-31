@@ -1,10 +1,11 @@
 <?php
 
+// namespace App\Http\Controllers\API;
 namespace App\Http\Controllers\API\User;
-
 use App\Factories\InitUser;
 use App\Factories\login;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Service;
@@ -24,7 +25,9 @@ use App\Mail\VerificationEmail;
 use App\Models\City;
 use App\Models\Governorate;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash as FacadesHash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Response;
 
@@ -234,7 +237,7 @@ class UserController extends Controller
         if(default_earning_type() === 'subscription' && $user_type == 'provider' && auth()->user() !== null && !auth()->user()->hasRole('admin')){
             $user_list = $user_list->where('is_subscribe',1);
         }
-
+        
         if(auth()->user() !== null && auth()->user()->hasRole('admin')){
             $user_list = $user_list->withTrashed();
             if($request->has('keyword') && isset($request->keyword))
@@ -385,7 +388,7 @@ class UserController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $user = \Auth::user();
+        $user = \auth()->user();
         if($request->has('id') && !empty($request->id)){
             $user = User::where('id',$request->id)->first();
         }
@@ -534,7 +537,7 @@ class UserController extends Controller
 
             $input['user_type']  = "user";
             $input['display_name'] = $input['first_name']." ".$input['last_name'];
-            $input['password'] = Hash::make($password);
+            $input['password'] = FacadesHash::make($password);
             $input['user_type'] = isset($input['user_type']) ? $input['user_type'] : 'user';
             $user = User::create($input);
         
@@ -702,7 +705,7 @@ class UserController extends Controller
         $password = $input['password'];
         $input['display_name'] = $input['first_name']." ".$input['last_name'];
         $input['user_type'] = isset($input['user_type']) ? $input['user_type'] : 'user';
-        $input['password'] = Hash::make($password);
+        $input['password'] = FacadesHash::make($password);
 
         if( $input['user_type'] === 'provider')
         {
@@ -750,7 +753,7 @@ class UserController extends Controller
         return comman_custom_response( $response );
     }
     public function userWalletBalance(Request $request){
-        $user = Auth::user();
+        $user = auth()->user();
         $amount = 0;
         $wallet = Wallet::where('user_id',$user->id)->first();
         if($wallet !== null){
@@ -797,85 +800,104 @@ class UserController extends Controller
         }
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $request->validate([
             'phone_number' => 'required|min:5|max:255',
         ]);
 
         $user = User::where('phone_number', $request->phone_number)
-        ->where('user_type','!=', 'admin')
-        ->first();
-        
+            ->where('user_type', '!=', 'admin')
+            ->first();
 
         try {
-            if($user) {
-                return Response::json([
-                    $user,
-                ], 302); 
+            if ($user) {
+                    // Generate a token for the user
+                    $token = $user->createToken('authToken')->plainTextToken;
+
+                    return Response::json([
+                        'user' => $user,
+                        'token' => $token,
+                    ], 200); // 200 means OK
             } else {
                 return Response::json([
-                    'message' => 'user Not Found',
+                    'message' => 'User not found',
                     'phone' => $request->phone_number,
-                ], 303);
+                ], 404); // 404 means Not Found
             }
-        } catch (Exception $e)  {
+        } catch (Exception $e) {
             return Response::json([
                 'message' => $e->getMessage(),
-            ], 404);
+            ], 500); // 500 means Internal Server Error
         }
-
     }
 
-    public function register(Request $request) {
 
-        $data = $request->validate([
-            'image' => 'required',
-            'phone_number' => 'required|unique:users,phone_number|max:255',
-            'first_name' => 'required|string|min:2|max:255',
-            'last_name' => 'required|string|min:2|max:255',
-            'government_id' => 'required|int|exists:governorates,id',
-            'city_id' => 'required|int|exists:cities,id',
-            'user_type' => 'required|string|in:provider,handyman',
+    
+    public function register(Request $request)
+    {
+        // Handle the image upload
+        $image = $request->file('image');
+        $imageName = time() . Str::random(5) . "." . $image->getClientOriginalExtension();
+        $path = $image->storeAs('users', $imageName, ['disk' => 'public']);
+        try{
+        // Create a new user
+        $user = User::create([
+            'username' => $request->first_name . ' ' . $request->last_name,
+            'email' => $request->first_name . '.' . $request->last_name . '@gmail.com',
+            'phone_number' => $request->phone_number,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'password' => FacadesHash::make($request->password),
+            'state_id' => $request->government_id,
+            'city_id' => $request->city_id,
+            'user_type' => $request->user_type,
+            'user_image' => $path,
         ]);
 
-            $image = $request->file('image');
-            $imageName = 
-                time() . Str::random(5) . "." . $image->getClientOriginalExtension();
-            
-                $path = $image->storeAs('users', $imageName , [
-                    'disk'=> 'public',
-                ]); // Note :
+        // Create a wallet if user_type is 'provider' or 'user'
+        if ($user->user_type == 'provider' || $user->user_type == 'user') {
+            $wallet = [
+                'title' => $user->first_name,
+                'user_id' => $user->id,
+                'amount' => 0
+            ];
+            Wallet::create($wallet);
+        }
 
-                
-                $user = User::create([
-                    
-                    'phone_number' => $request->phone_number,
-                    'first_name' => $request->first_name,
-                    'last_name' => $request->last_name,
-                    'state_id' => $request->government_id,
-                    'city_id' => $request->city_id,
-                    'user_type' => $request->user_type,
-                    'user_image' => $path,
+        if ($user) {
+            $token = $user->createToken('authToken')->plainTextToken;
 
-                ]);
-    
-            if($user->user_type == 'provider' || $user->user_type == 'user'){
-                $wallet = array(
-                    'title' => $user->first_name,
-                    'user_id' => $user->id,
-                    'amount' => 0
-                );
-                $result = Wallet::create($wallet);
+            $message = 'User created successfully';
+            $response = [
+                'message' => $message,
+                'user' => $user,
+                'token' => $token
+            ];
+            return comman_custom_response($response, 200);
+        } 
+
+        }catch(QueryException $e) {
+            // Check if the error is a duplicate entry error
+            if ($e->errorInfo[1] == 1062) {
+                return response()->json([
+                    'message' => 'A user with this information already exists.',
+                ], 409); // 409 Conflict
             }
     
-            $user_token = $user->createToken($request->first_name, ['*']);
-    
-            return Response::json([
-                'user' => $user->user_image,
-                'token' => $user_token->plainTextToken,
-            ],201); // 201 mean created
-
-        
+            // For other types of database errors
+            return response()->json([
+                'message' => 'An error occurred while creating the user.',
+                'error' => $e->getMessage(),
+            ], 500); // 500 Internal Server Error
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'An unexpected error occurred.',
+                'error' => $e->getMessage(),
+            ], 500); // 500 Internal Server Error
         }
+    }
+    
+    
 
 }

@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         //
         '\App\Console\Commands\CheckSubscription',
         '\App\Console\Commands\CheckPostJobRequest',
+        '\App\Console\Commands\CustomRouteList'
     ];
 
     /**
