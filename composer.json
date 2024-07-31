@@ -10,7 +10,8 @@
         "carlos-meneses/laravel-mpdf": "^2.1",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.9",
+        "kreait/firebase-php": "^6.9",
         "laravel-notification-channels/onesignal": "^2.3",
         "laravel/framework": "^8.40",
         "laravel/sanctum": "^2.11",
@@ -23,6 +24,7 @@
         "stripe/stripe-php": "^10.12",
         "tightenco/ziggy": "^1.4",
         "toin0u/geocoder-laravel": "^4.6",
+        "twilio/sdk": "^8.2",
         "yajra/laravel-datatables": "^1.5",
         "yajra/laravel-datatables-oracle": "^9.18"
     },

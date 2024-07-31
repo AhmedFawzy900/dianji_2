@@ -4,6 +4,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
 use App\Http\Controllers\API;
+use App\Http\Controllers\API\OtpVerifyController;
+use App\Http\Controllers\API\TestApiController;
+use App\Http\Controllers\Api\user\UserController;
+use App\Http\Controllers\Controller\API\OTPController;
+use App\Http\Controllers\SettingController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -41,16 +47,27 @@ Route::post('configurations', [ API\DashboardController::class, "configurations"
 
 
 
+Route::post('/request-otp', [OtpVerifyController::class, 'requestOTP']);
+Route::post('/verify-otp', [OtpVerifyController::class, 'verifyOTP']);
+
+
+
+
+Route::get('/settings', [SettingController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('register',[API\User\UserController::class, 'register']);
-Route::post('login',[API\User\UserController::class,'login']);
-Route::post('forgot-password',[ API\User\UserController::class,'forgotPassword']);
-Route::post('social-login',[ API\User\UserController::class, 'socialLogin' ]);
-Route::post('contact-us', [ API\User\UserController::class, 'contactUs' ] );
-Route::post('user-email-verify',[API\User\UserController::class,'verify']);
+
+Route::post('login', [UserController::class, 'login' ]);
+
+Route::post('create-user', [UserController::class, 'register' ]);
+
+
+Route::post('forgot-password',[UserController::class,'forgotPassword']);
+Route::post('social-login',[UserController::class, 'socialLogin' ]);
+Route::post('contact-us', [UserController::class, 'contactUs' ] );
+Route::post('user-email-verify',[UserController::class,'verify']);
 
 
 

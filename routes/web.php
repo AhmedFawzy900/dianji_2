@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\API\TestApiController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ProviderTypeController;
@@ -60,6 +61,9 @@ use App\Http\Controllers\VerificationController;
 require __DIR__.'/auth.php';
 require __DIR__.'/frontend.php';
 
+
+
+
 Route::group(['prefix' => 'auth'], function() {
     Route::get('login', [HomeController::class, 'authLogin'])->name('auth.login');
     Route::get('register', [HomeController::class, 'authRegister'])->name('auth.register');
@@ -94,7 +98,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::get('index_data',[CategoryController::class,'index_data'])->name('category.index_data');
         Route::post('category-bulk-action', [CategoryController::class, 'bulk_action'])->name('category.bulk-action');
         Route::post('category-action',[CategoryController::class, 'action'])->name('category.action');
-        Route::post('category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
+        Route::post('category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy.id');
         Route::post('check-in-trash', [CategoryController::class, 'check_in_trash'])->name('check-in-trash');
 
     });
@@ -105,7 +109,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::post('service-bulk-action', [ServiceController::class, 'bulk_action'])->name('service.bulk-action');
         Route::get('user-service-list',[ServiceController::class,'getUserServiceList'])->name('service.user-service-list');
         Route::post('service-action',[ServiceController::class, 'action'])->name('service.action');
-        Route::post('service/{id}', [ServiceController::class, 'destroy'])->name('service.destroy');
+        Route::post('service/{id}', [ServiceController::class, 'destroy'])->name('service.destroy.id');
         Route::get('user-service-index-data',[UserServiceListController::class,'index_data'])->name('service.user-index-data');
 
     });
@@ -120,7 +124,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::get('provider-index-data',[ProviderController::class,'index_data'])->name('provider.index_data');
         Route::get('provider/approve/{id}',[ProviderController::class, 'approve'])->name('provider.approve');
         Route::post('provider-action',[ProviderController::class, 'action'])->name('provider.action');
-        Route::post('provider/{id}', [ProviderController::class, 'destroy'])->name('provider.destroy');
+        Route::post('provider/{id}', [ProviderController::class, 'destroy'])->name('provider.destroy.id');
         Route::post('provider-bulk-action', [ProviderController::class, 'bulk_action'])->name('provider.bulk-action');
     });
 
@@ -128,7 +132,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::resource('provideraddress', ProviderAddressMappingController::class);
         Route::get('provideraddress-index-data',[ProviderAddressMappingController::class,'index_data'])->name('provideraddress.index_data');
         Route::post('provideraddress-bulk-action', [ProviderAddressMappingController::class, 'bulk_action'])->name('provideraddress.bulk-action');
-        Route::post('provideraddress/{id}', [ProviderAddressMappingController::class, 'destroy'])->name('provideraddress.destroy');
+        Route::post('provideraddress/{id}', [ProviderAddressMappingController::class, 'destroy'])->name('provideraddress.destroy.id');
         Route::post('/get-lat-long', [ProviderAddressMappingController::class, 'getLatLong'])->name('getLatLong');
     });
 
@@ -137,7 +141,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::get('providertype-index-data',[ProviderTypeController::class,'index_data'])->name('providertype.index_data');
         Route::post('providertype-bulk-action', [ProviderTypeController::class, 'bulk_action'])->name('providertype.bulk-action');
         Route::post('providertype-action',[ProviderTypeController::class, 'action'])->name('providertype.action');
-        Route::post('providertype/{id}', [ProviderTypeController::class, 'destroy'])->name('providertype.destroy');
+        Route::post('providertype/{id}', [ProviderTypeController::class, 'destroy'])->name('providertype.destroy.id');
     });
     Route::get('handyman-change-password', [ HandymanController::class , 'getChangePassword'])->name('handyman.getchangepassword');
     Route::post('handyman-change-password', [ HandymanController::class , 'changePassword'])->name('handyman.changepassword');
@@ -148,7 +152,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::post('handyman-bulk-action', [HandymanController::class, 'bulk_action'])->name('handyman.bulk-action');
         Route::get('handyman/approve/{id}',[ProviderController::class, 'approve'])->name('handyman.approve');
         Route::post('handyman-action',[HandymanController::class, 'action'])->name('handyman.action');
-        Route::post('handyman/{id}', [HandymanController::class, 'destroy'])->name('handyman.destroy');
+        Route::post('handyman/{id}', [HandymanController::class, 'destroy'])->name('handyman.destroy.id');
         Route::post('assign-provider', [HandymanController::class, 'updateProvider'])->name('handyman.updateProvider');
         Route::get('handymandetail/{id}', [HandymanController::class, 'handyman_detail'])->name('handyman.detail');
     });
@@ -158,7 +162,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::get('coupon-index_data',[CouponController::class,'index_data'])->name('coupon.index_data');
         Route::post('coupon-bulk-action', [CouponController::class, 'bulk_action'])->name('coupon.bulk-action');
         Route::post('coupons-action',[CouponController::class, 'action'])->name('coupon.action');
-        Route::post('coupon/{id}', [CouponController::class, 'destroy'])->name('coupon.destroy');
+        Route::post('coupon/{id}', [CouponController::class, 'destroy'])->name('coupon.destroy.id');
     });
 
     Route::group(['middleware' => ['permission:booking list']], function () {
@@ -168,7 +172,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::post('booking-status-update',[ BookingController::class,'updateStatus'])->name('bookingStatus.update');
         Route::post('booking-save', [ App\Http\Controllers\BookingController::class, 'store' ] )->name('booking.save');
         Route::post('booking-action',[BookingController::class, 'action'])->name('booking.action');
-        Route::post('booking/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
+        Route::post('booking/{id}', [BookingController::class, 'destroy'])->name('booking.destroy.id');
     });
 
     Route::group(['middleware' => ['permission:slider list']], function () {
@@ -176,7 +180,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::get('slider-index-data',[SliderController::class,'index_data'])->name('slider.index_data');
         Route::post('slider-bulk-action', [SliderController::class, 'bulk_action'])->name('slider.bulk-action');
         Route::post('slider-action',[SliderController::class, 'action'])->name('slider.action');
-        Route::post('slider/{id}', [SliderController::class, 'destroy'])->name('slider.destroy');
+        Route::post('slider/{id}', [SliderController::class, 'destroy'])->name('slider.destroy.id');
     });
 
     Route::resource('payment', PaymentController::class);
@@ -201,7 +205,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::get('user-index-data',[CustomerController::class,'index_data'])->name('user.index_data');
         Route::post('user-bulk-action', [CustomerController::class, 'bulk_action'])->name('user.bulk-action');
         Route::post('user-action',[CustomerController::class, 'action'])->name('user.action');
-        Route::post('user/{id}', [CustomerController::class, 'destroy'])->name('user.destroy');
+        Route::post('user/{id}', [CustomerController::class, 'destroy'])->name('user.destroy.id');
     });
 
     Route::get('booking-assign-form/{id}',[BookingController::class,'bookingAssignForm'])->name('booking.assign_form');
@@ -281,7 +285,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::get('document-index-data',[DocumentsController::class,'index_data'])->name('document.index_data');
         Route::post('document-bulk-action', [DocumentsController::class, 'bulk_action'])->name('document.bulk-action');
         Route::post('document-action',[DocumentsController::class, 'action'])->name('document.action');
-        Route::post('document/{id}', [DocumentsController::class, 'destroy'])->name('document.destroy');
+        Route::post('document/{id}', [DocumentsController::class, 'destroy'])->name('document.destroy.id');
     });
 
     Route::group(['middleware' => ['permission:providerdocument list']], function () {
@@ -289,7 +293,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::get('providerdocument-index-data',[ProviderDocumentController::class,'index_data'])->name('providerdocument.index_data');
         Route::post('providerdocument-bulk-action', [ProviderDocumentController::class, 'bulk_action'])->name('providerdocument.bulk-action');
         Route::post('providerdocument-action',[ProviderDocumentController::class, 'action'])->name('providerdocument.action');
-        Route::post('providerdocument/{id}', [ProviderDocumentController::class, 'destroy'])->name('providerdocument.destroy');
+        Route::post('providerdocument/{id}', [ProviderDocumentController::class, 'destroy'])->name('providerdocument.destroy.id');
     });
 
     Route::resource('ratingreview', RatingReviewController::class);
@@ -299,13 +303,13 @@ Route::group(['middleware' => ['auth', 'verified']], function()
     Route::resource('booking-rating', BookingRatingController::class);
     Route::get('booking-rating-index-data',[BookingRatingController::class,'index_data'])->name('booking-rating.index_data');
     Route::post('booking-rating-bulk-action', [BookingRatingController::class, 'bulk_action'])->name('booking-rating.bulk-action');
-    Route::post('booking-rating/{id}', [BookingController::class, 'destroy'])->name('booking-rating.destroy');
+    Route::post('booking-rating/{id}', [BookingController::class, 'destroy'])->name('booking-rating.destroy.id');
     Route::post('booking-rating-action',[CouponController::class, 'action'])->name('booking-rating.action');
 
     Route::resource('handyman-rating', HandymanRatingController::class);
     Route::get('handyman-rating-index-data',[HandymanRatingController::class,'index_data'])->name('handyman-rating.index_data');
     Route::post('handyman-rating-bulk-action', [HandymanRatingController::class, 'bulk_action'])->name('handyman-rating.bulk-action');
-    Route::post('handyman-rating/{id}', [HandymanController::class, 'destroy'])->name('handyman-rating.destroy');
+    Route::post('handyman-rating/{id}', [HandymanController::class, 'destroy'])->name('handyman-rating.destroy.id');
 
     Route::post('/payment-layout-page',[ PaymentGatewayController::class, 'paymentPage'])->name('payment_layout_page');
     Route::post('payment-settings/save',[ PaymentGatewayController::class , 'paymentsettingsUpdates'])->name('paymentsettingsUpdates');
@@ -316,10 +320,10 @@ Route::group(['middleware' => ['auth', 'verified']], function()
     Route::resource('tax', TaxController::class);
     Route::get('tax-index_data',[TaxController::class,'index_data'])->name('tax.index_data');
     Route::post('tax-bulk-action', [TaxController::class, 'bulk_action'])->name('tax.bulk-action');
-    Route::post('tax/{id}', [TaxController::class, 'destroy'])->name('tax.destroy');
+    Route::post('tax/{id}', [TaxController::class, 'destroy'])->name('tax.destroy.id');
     Route::get('earning',[EarningController::class,'index'])->name('earning');
     Route::get('earning-data',[EarningController::class,'setEarningData'])->name('earningData');
-    Route::post('earning/{id}', [EarningController::class, 'destroy'])->name('earning.destroy');
+    Route::post('earning/{id}', [EarningController::class, 'destroy'])->name('earning.destroy.id');
     Route::get('earning/{id}', [EarningController::class, 'show'])->name('earning.show');
 
     Route::get('handyman-earning',[EarningController::class,'handymanEarning'])->name('handymanEarning');
@@ -328,7 +332,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
     Route::resource('providerpayout', ProviderPayoutController::class);
     Route::get('providerpayout-index-data',[ProviderPayoutController::class,'index_data'])->name('providerpayout.index_data');
     Route::post('providerpayout-bulk-action', [ProviderPayoutController::class, 'bulk_action'])->name('providerpayout.bulk-action');
-    Route::get('providerpayout/create/{id}', [ProviderPayoutController::class,'create'])->name('providerpayout.create');
+    Route::get('providerpayout/create/{id}', [ProviderPayoutController::class,'create'])->name('providerpayout.create.id');
     Route::get('provider-payout-index-data/{id}',[ProviderPayoutController::class,'ProviderPayout_index_data'])->name('providerpayout.ProviderPayout_index_data');
 
     Route::get('review/{id}',[ProviderController::class,'review'])->name('provider.review');
@@ -337,14 +341,14 @@ Route::group(['middleware' => ['auth', 'verified']], function()
     Route::resource('handymanpayout', HandymanPayoutController::class);
     Route::get('handymanpayout-index-data',[HandymanPayoutController::class,'index_data'])->name('handymanpayout.index_data');
     Route::post('handymanpayout-bulk-action', [HandymanPayoutController::class, 'bulk_action'])->name('handymanpayout.bulk-action');
-    Route::get('handymanpayout/create/{id}', [HandymanPayoutController::class,'create'])->name('handymanpayout.create');
+    Route::get('handymanpayout/create/{id}', [HandymanPayoutController::class,'create'])->name('handymanpayout.create.id');
 
     Route::group(['middleware' => ['permission:handymantype list']], function () {
         Route::resource('handymantype', HandymanTypeController::class);
         Route::get('handyman-index_data',[HandymanTypeController::class,'index_data'])->name('handymantype.index_data');
         Route::post('handymantype-bulk-action', [HandymanTypeController::class, 'bulk_action'])->name('handymantype.bulk-action');
         Route::post('handymantype-action',[HandymanTypeController::class, 'action'])->name('handymantype.action');
-        Route::post('handymantype/{id}', [HandymanTypeController::class, 'destroy'])->name('handymantype.destroy');
+        Route::post('handymantype/{id}', [HandymanTypeController::class, 'destroy'])->name('handymantype.destroy.id');
     });
 
     Route::group(['middleware' => ['permission:servicefaq list']], function () {
@@ -362,7 +366,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
     Route::resource('wallet', WalletController::class);
     Route::get('wallet-index-data',[WalletController::class,'index_data'])->name('wallet.index_data');
     Route::post('wallet-bulk-action', [WalletController::class, 'bulk_action'])->name('wallet.bulk-action');
-    Route::post('wallet/{id}', [WalletController::class, 'destroy'])->name('wallet.destroy');
+    Route::post('wallet/{id}', [WalletController::class, 'destroy'])->name('wallet.destroy.id');
     Route::get('wallet-history-index-data/{id}',[WalletController::class,'wallethistory_index_data'])->name('wallethistory.index_data');
 
     Route::group(['middleware' => ['permission:subcategory list']], function () {
@@ -370,24 +374,24 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::get('sub-index-data',[SubCategoryController::class,'index_data'])->name('subcategory.sub-index-data');
         Route::post('sub-bulk-action', [SubCategoryController::class, 'bulk_action'])->name('sub-bulk-action');
         Route::post('subcategory-action',[SubCategoryController::class, 'action'])->name('subcategory.action');
-        Route::post('subcategory/{id}', [SubCategoryController::class, 'destroy'])->name('subcategory.destroy');
+        Route::post('subcategory/{id}', [SubCategoryController::class, 'destroy'])->name('subcategory.destroy.id');
     });
 
     Route::resource('plans', PlanController::class);
     Route::get('plans-index-data',[PlanController::class,'index_data'])->name('plans.index_data');
     Route::post('plans-bulk-action', [PlanController::class, 'bulk_action'])->name('plans.bulk-action');
-    Route::post('plans/{id}', [PlanController::class, 'destroy'])->name('plans.destroy');
+    Route::post('plans/{id}', [PlanController::class, 'destroy'])->name('plans.destroy.id');
 
     Route::resource('bank',BankController::class);
     Route::get('bank-index-data',[BankController::class, 'index_data'])->name('bank.index_data');
     Route::post('bank-bulk-action',[BankController::class,'bulk_action'])->name('bank.bulk_action');
     Route::post('bank-action',[BankController::class, 'action'])->name('bank.action');
-    Route::get('bank/create/', [BankController::class,'create'])->name('bank.create');
+    Route::get('bank/create/', [BankController::class,'create'])->name('bank.create.id');
     Route::get('bank-list/{providerbank}',[BankController::class, 'banklist'])->name('bank.list');
 
 
     Route::get('/provider-detail-page',[ ProviderController::class, 'providerDetail'])->name('provider_detail_pages');
-    Route::post('/provider-detail-page',[ ProviderController::class, 'providerDetail'])->name('provider_detail_pages');
+    Route::post('/provider-detail-page',[ ProviderController::class, 'providerDetail'])->name('provider_detail_page_post');
     Route::post('/booking-layout-page/{id}',[ BookingController::class, 'bookingstatus'])->name('booking_layout_page');
     Route::get('/invoice_pdf/{id}', [BookingController::class, 'createPDF'])->name('invoice_pdf');
 
@@ -412,7 +416,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::get('blog-index-data',[BlogController::class,'index_data'])->name('blog.index_data');
         Route::post('blog-bulk-action', [BlogController::class, 'bulk_action'])->name('blog.bulk-action');
         Route::post('blog-action',[BlogController::class, 'action'])->name('blog.action');
-        Route::post('blog/{id}', [BlogController::class, 'destroy'])->name('blog.destroy');
+        Route::post('blog/{id}', [BlogController::class, 'destroy'])->name('blog.destroy.id');
     });
 
     Route::group(['middleware' => ['permission:service list']], function () {

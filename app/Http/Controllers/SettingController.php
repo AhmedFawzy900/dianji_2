@@ -19,6 +19,11 @@ class SettingController extends Controller
         $this->middleware('auth');
     }
 
+    public function index()
+    {
+        return "hallo";
+    }
+
     public function settings(Request $request)
     {
         $auth_user = authSession();
@@ -56,7 +61,7 @@ class SettingController extends Controller
 
             $provider_id = $request->id ?? auth()->user()->id;
 
-            $days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+            $days = ['sat', 'sun','mon', 'tue', 'wed', 'thu', 'fri'];
 
             $slotsArray = ['days' => $days];
             $activeDay = 'mon';

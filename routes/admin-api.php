@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
 use App\Http\Controllers\API;
+use App\Http\Controllers\API\TestApiController;
+use App\Http\Controllers\SettingController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,6 +21,7 @@ use App\Http\Controllers\API;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 
 Route::post('/auth/login', [Api\User\UserController::class, 'login'])
 ->middleware('guest:sanctum');
