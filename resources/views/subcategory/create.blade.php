@@ -36,6 +36,17 @@
                                         ]) }}
                                     
                                 </div>
+                                {{-- add related sub category --}}
+                                <div class="form-group col-md-4">
+                                    {{ Form::label('related_subcategory_id', __('messages.select_name', ['select' => __('related subcategory')])) }}
+                                    <br />
+                                    {{ Form::select('related_subcategory_id', 
+                                        $allSubcategories->pluck('name', 'id'), 
+                                        old('related_subcategory_id'), 
+                                        ['class' => 'form-control', 'placeholder' => __('messages.select_name', ['select' => __('related subcategory')])]
+                                    ) }}
+                                </div>
+                                {{-- end related sub category --}}
                                 
                                 <div class="form-group col-md-4">
                                     {{ Form::label('status',trans('messages.status').' <span class="text-danger">*</span>',['class'=>'form-control-label'],false) }}

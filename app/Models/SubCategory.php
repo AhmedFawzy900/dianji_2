@@ -12,13 +12,14 @@ class SubCategory extends BaseModel implements HasMedia
     use HasFactory, InteractsWithMedia,SoftDeletes;
     protected $table = 'sub_categories';
     protected $fillable = [
-        'name', 'description', 'is_featured', 'status' , 'category_id'
+        'name', 'description', 'is_featured', 'status' , 'category_id' , 'related_subcategory_id'
     ];
 
     protected $casts = [
         'status'    => 'integer',
         'is_featured'  => 'integer',
         'category_id'  => 'integer',
+        'related_subcategory_id'  => 'integer',
     ];
     public function category(){
         return $this->belongsTo('App\Models\Category','category_id','id')->withTrashed();
@@ -30,4 +31,9 @@ class SubCategory extends BaseModel implements HasMedia
     {
         return $query->orderBy('updated_at', 'desc');
     }
+      // Define the relationship to the related subcategory
+      public function relatedSubcategory()
+      {
+          return $this->belongsTo(Subcategory::class, 'related_subcategory_id');
+      }
 }
