@@ -9,6 +9,7 @@ use App\Http\Controllers\API\TestApiController;
 use App\Http\Controllers\Api\user\UserController;
 use App\Http\Controllers\Controller\API\OTPController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ZoneController;
 
 /*
 |--------------------------------------------------------------------------
@@ -199,4 +200,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('payment-gateway-list',[API\FrontendSettingController::class,'getPaymentGatewayList']);
     Route::get('payment-gateways',[API\PaymentController::class, 'paymentGateways']);
 
+    // zones apis
+    Route::post('/store-zones', [ZoneController::class, 'store']);
+    Route::get('/zones', [ZoneController::class, 'index']); // للحصول على قائمة المناطق الخاصة بالمزود
+    Route::put('/update-zones', [ZoneController::class, 'update']); // لتحديث أو إضافة مناطق بناءً على provider_id
+    Route::delete('/delete-zones-item', [ZoneController::class, 'deleteZoneItem']); // لإزالة منطقة معينة
+    Route::delete('/zones/{id}', [ZoneController::class, 'destroy']); // لإزالة منطقة معينة
 });
+
+
+// we want to add 

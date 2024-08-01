@@ -65,6 +65,17 @@ class SubCategoryController extends Controller
                     $q->where('name','like','%'.$keyword.'%');
                 });
             })
+            ->addColumn('related_subcategory', function ($query){
+                if ($query->related_subcategory_id != null && isset($query->relatedSubcategory)) {
+                    return $query->relatedSubcategory->name;
+                } 
+                return '-';
+            })
+            ->filterColumn('related_subcategory',function($query,$keyword){
+                $query->whereHas('relatedSubcategory',function ($q) use($keyword){
+                    $q->where('name','like','%'.$keyword.'%');
+                });
+            })
             ->editColumn('is_featured' , function ($query){
                 $disabled = $query->trashed() ? 'disabled': '';
 
@@ -152,8 +163,8 @@ class SubCategoryController extends Controller
             $pageTitle = trans('messages.add_button_form',['form' => trans('messages.subcategory')]);
             $subcategory = new SubCategory;
         }
-        
-        return view('subcategory.create', compact('pageTitle' ,'subcategory' ,'auth_user' ));
+        $allSubcategories = SubCategory::all();
+        return view('subcategory.create', compact('pageTitle' ,'subcategory' ,'auth_user','allSubcategories' ));
     }
 
     /**
@@ -162,37 +173,76 @@ class SubCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // public function store(SubCategoryRequest $request)
+    // {
+    //     if(demoUserPermission()){
+    //         return  redirect()->back()->withErrors(trans('messages.demo_permission_denied'));
+    //     }
+    //     $data = $request->all();
+       
+    //     $data['is_featured'] = 0;
+    //     if($request->has('is_featured')){
+	// 		$data['is_featured'] = 1;
+	// 	}
+    //     if(!$request->is('api/*')) {
+    //         if($request->id == null ){
+    //             if(!isset($data['subcategory_image'])){
+    //                 return  redirect()->back()->withErrors(__('validation.required',['attribute' =>'attachments']));
+    //             }
+    //         }
+    //     }
+    //     $result = SubCategory::updateOrCreate(['id' => $data['id'] ],$data);
+
+    //     storeMediaFile($result,$request->subcategory_image, 'subcategory_image');
+
+    //     $message = trans('messages.update_form',['form' => trans('messages.subcategory')]);
+    //     if($result->wasRecentlyCreated){
+    //         $message = trans('messages.save_form',['form' => trans('messages.subcategory')]);
+    //     }
+    //     if($request->is('api/*')) {
+    //         return comman_message_response($message);
+	// 	}
+    //     return redirect(route('subcategory.index'))->withSuccess($message);    
+    // }
+
     public function store(SubCategoryRequest $request)
     {
-        if(demoUserPermission()){
-            return  redirect()->back()->withErrors(trans('messages.demo_permission_denied'));
+        if (demoUserPermission()) {
+            return redirect()->back()->withErrors(trans('messages.demo_permission_denied'));
         }
+
+        // Validate and collect the request data
         $data = $request->all();
-       
-        $data['is_featured'] = 0;
-        if($request->has('is_featured')){
-			$data['is_featured'] = 1;
-		}
-        if(!$request->is('api/*')) {
-            if($request->id == null ){
-                if(!isset($data['subcategory_image'])){
-                    return  redirect()->back()->withErrors(__('validation.required',['attribute' =>'attachments']));
-                }
+        $data['is_featured'] = $request->has('is_featured') ? 1 : 0;
+
+        // Check for required image file in non-API requests
+        if (!$request->is('api/*') && $request->id === null) {
+            if (!$request->hasFile('subcategory_image')) {
+                return redirect()->back()->withErrors(__('validation.required', ['attribute' => 'attachments']));
             }
         }
-        $result = SubCategory::updateOrCreate(['id' => $data['id'] ],$data);
 
-        storeMediaFile($result,$request->subcategory_image, 'subcategory_image');
+        // Update or create the subcategory
+        $result = SubCategory::updateOrCreate(['id' => $data['id']], $data);
 
-        $message = trans('messages.update_form',['form' => trans('messages.subcategory')]);
-        if($result->wasRecentlyCreated){
-            $message = trans('messages.save_form',['form' => trans('messages.subcategory')]);
+        // Store the media file if present
+        if ($request->hasFile('subcategory_image')) {
+            storeMediaFile($result, $request->file('subcategory_image'), 'subcategory_image');
         }
-        if($request->is('api/*')) {
+
+        // Determine the success message
+        $message = $result->wasRecentlyCreated
+            ? trans('messages.save_form', ['form' => trans('messages.subcategory')])
+            : trans('messages.update_form', ['form' => trans('messages.subcategory')]);
+
+        // Return API or web response
+        if ($request->is('api/*')) {
             return comman_message_response($message);
-		}
-        return redirect(route('subcategory.index'))->withSuccess($message);    
+        }
+
+        return redirect(route('subcategory.index'))->withSuccess($message);
     }
+
 
     /**
      * Display the specified resource.

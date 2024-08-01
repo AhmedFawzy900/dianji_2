@@ -249,8 +249,13 @@ class User extends Authenticatable implements HasMedia
     {
         return $query->orderBy('updated_at', 'desc');
     }
-
     
+    // relaton with zones model
+    public function zones()
+    {
+        return $this->hasMany(Zone::class, 'provider_id');
+    } 
 
     
 }
+

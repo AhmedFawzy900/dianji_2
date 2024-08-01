@@ -122,6 +122,11 @@
                         title: "{{ __('messages.category') }}"
                     },
                     {
+                      data:'related_subcategory',
+                      name:'related_subcategory',
+                      title: "{{ __('related_subcategory') }}"
+                    },
+                    {
                         data: 'is_featured',
                         name: 'is_featured',
                         title: "{{ __('messages.featured') }}"
