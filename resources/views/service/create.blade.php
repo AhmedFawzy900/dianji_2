@@ -204,6 +204,7 @@
                                         for="is_featured">{{ __('messages.set_as_featured') }}</label>
                                 </div>
                             </div>
+                            
                             <!-- @if(!empty( $digitalservicedata) && $digitalservicedata->value == 1)
                             <div class="form-group col-md-3">
                                 <div class="custom-control custom-switch">
@@ -213,6 +214,12 @@
                                 </div>
                             </div>
                             @endif -->
+                            <div class="form-group col-md-3">
+                                <div class="custom-control custom-switch">
+                                    {{ Form::checkbox('is_delivery', 1, $servicedata->is_delivery, ['class' => 'custom-control-input', 'id' => 'is_delivery']) }}
+                                    <label class="custom-control-label" for="is_delivery">{{ __('delivery available') }}</label>
+                                </div>
+                            </div>
                             @if(!empty( $advancedPaymentSetting) && $advancedPaymentSetting == 1)
                             <div class="form-group col-md-3" id="is_enable_advance">
                                 <div class="custom-control custom-switch">
@@ -229,6 +236,7 @@
                                 <small class="help-block with-errors text-danger"></small>
                             </div>
                         </div>
+                        
 
                         {{ Form::submit( __('messages.save'), ['class'=>'btn btn-md btn-primary float-right']) }}
                         {{ Form::close() }}

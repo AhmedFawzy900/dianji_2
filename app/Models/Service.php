@@ -16,7 +16,7 @@ class Service extends Model implements  HasMedia
     protected $fillable = [
         'name', 'category_id', 'provider_id' , 'type' , 'is_slot','discount' , 'duration' ,'description',
         'is_featured', 'status' , 'price' , 'added_by','subcategory_id','service_type','visit_type',
-        'is_enable_advance_payment','advance_payment_amount'
+        'is_enable_advance_payment','advance_payment_amount','is_delivery'
     ];
 
     protected $casts = [
@@ -31,6 +31,7 @@ class Service extends Model implements  HasMedia
         'is_slot'                   => 'integer',
         'is_enable_advance_payment' => 'integer',
         'advance_payment_amount'    => 'double',
+        'is_delivery'               => 'integer',
     ];
 
     public function providers(){

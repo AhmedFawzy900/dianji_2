@@ -200,12 +200,13 @@ class ServiceController extends Controller
 
             if ($digital_services == 1) {
                 $visittype = [
-                    'ON_SITE' => 'On Site',
                     'ONLINE' => 'Online',
+                    'INDOOR' => 'Indoor',
+                    'OUTDOOR' => 'Outdoor',
                 ];
             } else {
                 $visittype = [
-                    'ON_SITE' => 'On Site',
+                    'ONLINE' => 'Online',
                 ];
             }
 
@@ -234,6 +235,7 @@ class ServiceController extends Controller
 
         $services = $request->all();
 
+        $service['is_delivery'] = !empty($request->is_delivery) ? $request->is_delivery : 0;
         $services['service_type'] = !empty($request->service_type) ? $request->service_type : 'service';
         $services['provider_id'] = !empty($request->provider_id) ? $request->provider_id : auth()->user()->id;
         if(auth()->user()->hasRole('user')){
@@ -281,7 +283,10 @@ class ServiceController extends Controller
             $services['is_featured'] = 0;
             $services['is_slot'] = 0;
             $services['is_enable_advance_payment'] = 0;
-
+            $services['is_delivery'] = 0;
+            if($request->has('is_delivery')){
+                $services['is_delivery'] = 1;
+            }
             if($request->has('is_featured')){
                 $services['is_featured'] = 1;
             }
@@ -291,7 +296,7 @@ class ServiceController extends Controller
             if($request->has('is_slot')){
                 $services['is_slot'] = 1;
             }
-
+            
         }
         if(!empty($request->advance_payment_amount)){
             $services['advance_payment_amount'] = $request->advance_payment_amount;
