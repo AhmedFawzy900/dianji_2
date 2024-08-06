@@ -142,7 +142,7 @@
                         </li>
                       @endif
                       <!-- Wishlist -->
-                      @if(empty(auth()->user()) || auth()->user()->user_type !== 'user')
+                      @if(empty(auth()->user()))
                         <li class="ms-sm-3 ms-2">
                            <a href="{{route('user.login')}}" class="btn btn btn-outline-primary" role="button">
                               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16"
@@ -161,7 +161,7 @@
                         </li>
                       @else
 
-                      @if(auth()->check() && auth()->user()->user_type == 'user')
+                      @if(auth()->check() )
                            <li class="nav-item dropdown user-dropdown" id="itemdropdown1">
                               <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button"
                                  data-bs-toggle="dropdown" aria-expanded="false">

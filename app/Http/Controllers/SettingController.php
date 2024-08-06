@@ -626,6 +626,7 @@ class SettingController extends Controller
     {
         $auth_user = authSession();
         $providerdata = User::with('providertype')->where('user_type', 'provider')->where('id', $id)->first();
+        
         if (empty($providerdata)) {
             $msg = __('messages.not_found_entry', ['name' => __('messages.provider')]);
             return redirect(route('provider.index'))->withError($msg);
@@ -634,6 +635,24 @@ class SettingController extends Controller
         return view('setting.comission', compact('pageTitle', 'providerdata', 'auth_user'));
     }
 
+    
+        
+    // save the comission amount and type for provider
+    public function saveCommission(Request $request, $id)
+    {
+        $request->validate([
+            'commission' => 'required|numeric|min:0',
+            'commission_type' => 'required',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->update([
+            'comission' => $request->commission,
+            'comission_type' => $request->commission_type,
+        ]);
+
+        return redirect()->route('provider.index')->with('success', __('Commission updated successfully.'));
+    }
 
     public function otherSetting(Request $request)
     {

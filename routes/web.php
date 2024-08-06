@@ -212,6 +212,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
     Route::get('booking/details/{id}',[BookingController::class,'bookingDetails'])->name('booking.details');
     Route::post('booking-assigned',[BookingController::class,'bookingAssigned'])->name('booking.assigned');
     Route::get('comission/{id}',[SettingController::class,'comission'])->name('setting.comission');
+    Route::post('comission-save/{id}',[SettingController::class,'saveCommission'])->name('comission.save');
     Route::get('details/{id}',[BookingController::class,'bookingDetailsData'])->name('booking.detailsdata');
 
 

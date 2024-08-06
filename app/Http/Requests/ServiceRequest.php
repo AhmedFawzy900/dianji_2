@@ -32,6 +32,7 @@ class ServiceRequest extends FormRequest
             'type'                           => 'required',
             'price'                          => 'required|min:0',
             'status'                         => 'required',
+            'is_delivery' => 'boolean',
         ];
     }
     public function messages()
