@@ -178,6 +178,8 @@ class BookingController extends Controller
 
         return response()->json(['status' => true, 'message' => $message]);
     }
+    
+
 
     public function assignProviderForm($id)
     {   
@@ -209,6 +211,9 @@ class BookingController extends Controller
             'message' => 'Provider updated successfully.',
         ]);
     }   
+
+
+    
 
     /**
      * Show the form for creating a new resource.
@@ -880,5 +885,8 @@ class BookingController extends Controller
         return redirect('/booking-list');
 
      }
+
+
+    
 }
 

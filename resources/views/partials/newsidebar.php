@@ -70,6 +70,11 @@ use Lavary\Menu\Menu;
                 ->nickname('booking')
                 ->data('permission', 'booking list');
 
+                $menu->booking->add('<span>'.__('messages.notification').'</span>', ['route' => 'notifications'])
+                ->prepend('<i class="fa fa-bell"></i>')
+                ->nickname('notifications')
+                ->data('permission', 'notification list');
+
         $menu->add('<span>'.__('messages.provider').'</span>', ['class' => ''])
                 ->prepend('<i class="la la-users"></i>')
                 ->nickname('provider')

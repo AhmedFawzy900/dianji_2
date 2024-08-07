@@ -27,7 +27,8 @@ use App\Models\{
     Blog,
     PostJobRequest,
     FrontendSetting,
-    Country
+    Country,
+    Notification
 };
 use App\Http\Resources\API\{
     BookingResource,
@@ -45,7 +46,6 @@ use App\Http\Resources\API\{
 
 class DashboardController extends Controller
 {
-
 
 
     public function dashboardDetail(Request $request){

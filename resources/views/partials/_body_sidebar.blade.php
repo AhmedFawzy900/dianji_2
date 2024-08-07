@@ -103,6 +103,20 @@ $menu->add('<span>'.__('messages.booking').'</span><span class="custom-tooltip">
 </svg>')
 ->nickname('booking')
 ->data('permission', 'booking list');
+
+
+$menu->add('<span>'.__('messages.notification').'</span><span class="custom-tooltip"><span class="tooltip-text">'.__('messages.notification').'</span></span>', ['route' => 'notifications'])
+->prepend('<svg class="mr-2" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 22C13.1046 22 14 21.1046 14 20H10C10 21.1046 10.8954 22 12 22Z" fill="currentColor"/>
+  <path d="M18 16H6V10C6 6.68629 8.68629 4 12 4C15.3137 4 18 6.68629 18 10V16Z" stroke="currentColor" stroke-width="2"/>
+  <path d="M20 16V10C20 6.68629 17.3137 4 14 4C12.1206 4 10.4934 5.24266 9.6875 7.5" stroke="currentColor" stroke-width="2"/>
+  <path d="M4 16H20" stroke="currentColor" stroke-width="1"/>
+</svg>
+
+')
+->nickname('notification')
+->data('permission', 'booking notification list');
+
 if(optional($servicesetting)->post_services == 1){
 $menu->add(__('messages.sidebar_form_title',['form' => trans('messages.custom_job')]), ['class' => 'category-main'])->data('permission', 'postjob');
 
