@@ -4,6 +4,15 @@ $datetime = $sitesetup ? json_decode($sitesetup->value) : null;
 @endphp
 <x-master-layout>
     <div class="container-fluid">
+        {{-- @if($notifications->isNotEmpty())
+            @foreach($notifications as $notification)
+                <div class="alert alert-warning">
+                            <a href="/booking/{{ $notification->order_id }}" class="">{{ $notification->message }}</a>
+                            <button class="mark-as-read" data-id="{{ $notification->id }}">Mark as Read</button>
+                        
+                </div>
+            @endforeach  
+        @endif --}}
         <div class="row">
             <div class="col-md-12">
                 <div class="row">

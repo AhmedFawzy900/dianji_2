@@ -35,6 +35,7 @@ use App\Http\Controllers\BankController;
 use App\Http\Controllers\PostJobRequestController;
 use App\Http\Controllers\ServicePackageController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BookingNotificationController;
 use App\Http\Controllers\BookingRatingController;
 use App\Http\Controllers\HandymanRatingController;
 use App\Http\Controllers\UserServiceListController;
@@ -166,6 +167,13 @@ Route::group(['middleware' => ['auth', 'verified']], function()
     });
 
     Route::group(['middleware' => ['permission:booking list']], function () {
+
+        // notification part
+        Route::get('/booking/notifications', [BookingNotificationController::class, 'notifications'])->name('notifications');
+        Route::post('/booking/notifications_read/{id}', [BookingNotificationController::class, 'markAsRead'])->name('notifications.read');
+        Route::delete('/booking/notifications_delete/{id}', [BookingNotificationController::class, 'destroy'])->name('notifications.delete');
+       
+
         Route::resource('booking', BookingController::class);
         Route::get('booking-index-data',[BookingController::class,'index_data'])->name('booking.index_data');
         Route::post('booking-bulk-action', [BookingController::class, 'bulk_action'])->name('booking.bulk-action');
@@ -174,7 +182,8 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::post('booking-action',[BookingController::class, 'action'])->name('booking.action');
         Route::get('/booking/assign_provider_form/{id}', [BookingController::class, 'assignProviderForm'])->name('booking.assign_provider_form');
         Route::post('/booking/assign_provider', [BookingController::class, 'assignProvider'])->name('booking.assign_provider');
-        
+
+ 
         Route::post('booking/{id}', [BookingController::class, 'destroy'])->name('booking.destroy.id');
 
     });

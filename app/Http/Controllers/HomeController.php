@@ -19,6 +19,7 @@ use App\Models\AppDownload;
 use App\Models\FrontendSetting;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use App\Models\BookingRating;
+use App\Models\Notification;
 use Carbon\Carbon;
 
 class HomeController extends Controller
@@ -39,6 +40,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        $notifications = Notification::where('is_read', false)->get(); // Fetch unread notifications
         $user = auth()->user();
 
         if (request()->ajax()) {
@@ -120,7 +122,7 @@ class HomeController extends Controller
             ->where('created_at', '<=', Carbon::now()->subHours(24)->toDateTimeString())
             ->limit(5)->get();
 
-            return $this->adminDashboard($data, $bookings);
+            return $this->adminDashboard($data, $bookings ,$notifications);
         } else if (auth()->user()->hasAnyRole('provider')) {
             return $this->providerDashboard($data);
         } else if (auth()->user()->hasAnyRole('handyman')) {
@@ -136,9 +138,9 @@ class HomeController extends Controller
      * @param $data
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function adminDashboard($data, $bookings)
+    public function adminDashboard($data, $bookings , $notifications)
     {
-        return view('dashboard.dashboard', compact('data', 'bookings'));
+        return view('dashboard.dashboard', compact('data', 'bookings' , 'notifications'));
     }
     public function providerDashboard($data)
     {
