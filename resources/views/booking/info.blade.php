@@ -18,7 +18,12 @@
                     @hasanyrole('admin|demo_admin|provider')
                         <a href="{{ route('booking.assign_form',['id'=> $bookingdata->id ]) }}"
                         class="float-right btn btn-sm btn-primary loadRemoteModel"><i class="lab la-telegram-plane"></i>
-                        {{ __('messages.assign') }}</a>
+                        {{ __('assign to handyman') }}</a>
+                    @endhasanyrole
+                    @hasanyrole('admin|demo_admin|provider')
+                        <a href="{{ route('booking.assign_provider_form',['id'=> $bookingdata->id ]) }}"
+                            class="float-right btn mr-2 btn-sm btn-primary loadRemoteModel"><i class="lab la-telegram-plane"></i>
+                            {{ __('assign to provider') }}</a>
                     @endhasanyrole
                 @endif
             </div>

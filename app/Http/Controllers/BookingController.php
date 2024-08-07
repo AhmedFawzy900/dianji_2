@@ -179,6 +179,37 @@ class BookingController extends Controller
         return response()->json(['status' => true, 'message' => $message]);
     }
 
+    public function assignProviderForm($id)
+    {   
+        
+        $bookingdata = Booking::findOrFail($id);
+        $pageTitle = __('Assign to Provider');
+        
+        return view('booking.assign_to_provider_form', compact('bookingdata', 'pageTitle'));
+    }
+
+    public function assignProvider(Request $request)
+    {
+        $validated = $request->validate([
+            'provider_id' => 'required|array',
+            'provider_id.*' => 'exists:users,id',
+            'id' => 'required|exists:bookings,id',
+        ]);
+    
+        $booking = Booking::find($request->id);
+
+        // Update the provider_id
+        $booking->provider_id = $validated['provider_id'][0];
+        $booking->save();
+
+        // Redirect with a success message
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Provider updated successfully.',
+        ]);
+    }   
+
     /**
      * Show the form for creating a new resource.
      *
@@ -720,6 +751,7 @@ class BookingController extends Controller
     return $pdf->download('invoice.pdf');
     }
 
+    
     public function updateStatus(Request $request)
     {
 

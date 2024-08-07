@@ -33,6 +33,31 @@ class Kernel extends ConsoleKernel
         }
 
         $schedule->command('check:postjobrequest')->daily();
+
+        // check if the order not approved after 24 hour 
+        $schedule->call(function () {
+            $orders = \App\Models\Booking::where('status', 'pending')
+                ->where('created_at', '<', now()->subHours(24))
+                ->get();
+    
+            foreach ($orders as $order) {
+                // Send notification or alert
+                \App\Notifications\OrderNotApproved::dispatch($order);
+            }
+        })->daily();
+
+        // check that order exeed time and not start 
+        $schedule->call(function () {
+            $orders = \App\Models\Booking::where('status', 'accepted')
+                ->where('scheduled_time', '<', now())
+                ->where('started_at', null)
+                ->get();
+    
+            foreach ($orders as $order) {
+                // Send notification or alert
+                \App\Notifications\OrderExceededTime::dispatch($order);
+            }
+        })->daily();
     }
 
     /**

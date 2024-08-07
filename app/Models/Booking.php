@@ -283,4 +283,14 @@ class Booking extends Model
         }
         return $addonPrice;
     }
+
+    public function providersAdded()
+    {
+        return $this->belongsToMany(User::class, 'booking_provider', 'booking_id', 'provider_id');
+    }
+
+    public function providers()
+    {
+        return $this->belongsToMany(User::class, 'booking_provider', 'booking_id', 'provider_id');
+    }
 }

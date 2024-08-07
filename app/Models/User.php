@@ -257,6 +257,10 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Zone::class, 'provider_id');
     } 
 
+    public function bookings()
+    {
+        return $this->belongsToMany(Booking::class, 'booking_provider', 'provider_id', 'booking_id');
+    }
     
 }
 
