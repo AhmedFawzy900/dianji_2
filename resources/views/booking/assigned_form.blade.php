@@ -24,9 +24,12 @@
                         } else {
                             $route = route('ajax-list', ['type' => 'handyman', 'provider_id' => $bookingdata->provider_id ]);
                         }
+                        
                         $assigned_handyman = $bookingdata->handymanAdded->mapWithKeys(function ($item) {
                             return [$item->handyman_id => optional($item->handyman)->display_name];
                         });
+                        dd($bookingdata->handymanAdded);
+                        
                     @endphp
                     {{ Form::select('handyman_id[]', $assigned_handyman, $bookingdata->handymanAdded->pluck('handyman_id'), [
                             'class' => 'select2js handyman',

@@ -172,7 +172,11 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::post('booking-status-update',[ BookingController::class,'updateStatus'])->name('bookingStatus.update');
         Route::post('booking-save', [ App\Http\Controllers\BookingController::class, 'store' ] )->name('booking.save');
         Route::post('booking-action',[BookingController::class, 'action'])->name('booking.action');
+        Route::get('/booking/assign_provider_form/{id}', [BookingController::class, 'assignProviderForm'])->name('booking.assign_provider_form');
+        Route::post('/booking/assign_provider', [BookingController::class, 'assignProvider'])->name('booking.assign_provider');
+        
         Route::post('booking/{id}', [BookingController::class, 'destroy'])->name('booking.destroy.id');
+
     });
 
     Route::group(['middleware' => ['permission:slider list']], function () {
