@@ -177,7 +177,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::resource('booking', BookingController::class);
         Route::get('booking-index-data',[BookingController::class,'index_data'])->name('booking.index_data');
         Route::post('booking-bulk-action', [BookingController::class, 'bulk_action'])->name('booking.bulk-action');
-        Route::post('booking-status-update',[ BookingController::class,'updateStatus'])->name('bookingStatus.update');
+        Route::post('booking-status-update/{id}',[ BookingController::class,'updateStatus'])->name('bookingStatus.update');
         Route::post('booking-save', [ App\Http\Controllers\BookingController::class, 'store' ] )->name('booking.save');
         Route::post('booking-action',[BookingController::class, 'action'])->name('booking.action');
         Route::get('/booking/assign_provider_form/{id}', [BookingController::class, 'assignProviderForm'])->name('booking.assign_provider_form');
