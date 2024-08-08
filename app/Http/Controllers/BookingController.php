@@ -759,18 +759,38 @@ class BookingController extends Controller
     
     public function updateStatus(Request $request)
     {
+        
+        // switch ($request->type) {
+        //     case 'payment':
+        //         $data = Payment::where('booking_id',$request->bookingId)->update(['payment_status'=>$request->status]);
+        //         break;
+        //     default:
+        //         $data = Booking::find($request->bookingId)->update(['status'=>$request->status]);
+        //         break;
+        // }
 
-        switch ($request->type) {
-            case 'payment':
-                $data = Payment::where('booking_id',$request->bookingId)->update(['payment_status'=>$request->status]);
-                break;
-                default:
+        // return comman_custom_response(['message'=> 'Status Updated' , 'status' => true]);
+        try {
+            // Find the booking and update it...
+            if ($request->request_status != null ) {
+                $booking = Booking::findOrFail($request->booking_id);
+                $booking->status = $request->request_status;
+                $booking->save();
+            }
 
-                $data = Booking::find($request->bookingId)->update(['status'=>$request->status]);
-                break;
+            if ($request->payment_status != null ) {
+                $payment = Payment::where('booking_id', $request->booking_id)->first();
+
+                if ($payment != null) {
+                  $payment->payment_status = $request->payment_status;
+                  $payment->save();
+                }
+            }
+            return redirect()->back()->with('success', 'Request updated successfully!');
+        }catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
-        return comman_custom_response(['message'=> 'Status Updated' , 'status' => true]);
     }
 
     public function saveBookingRating(Request $request)
