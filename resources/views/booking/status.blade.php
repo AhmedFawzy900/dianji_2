@@ -108,61 +108,6 @@ $datetime = $sitesetup ? json_decode($sitesetup->value) : null;
 {{-- here we will put the button edit that will show form  --}}
 @if (Auth::user()->user_type == 'admin')  
     <div class="d-flex justify-content-end">
-        <button type="button" id="showFieldsButton" class="btn btn-primary">edit</button>
+        <a href="{{ route('booking.edit', $bookingdata->id) }}" type="button"  id="showFieldsButton" class="btn btn-primary">edit</a>
     </div>
 @endif
-
-<br />
-{{-- this form will be for update the request status and payment status will be hidden but when i click in update button it appear and it can seen by admin --}}
-<div class="hidden" id="request_status">
-    <div class="col-md-12 form-group">
-        <form id="updateForm" method="POST" action="{{ route('bookingStatus.update', $bookingdata->id) }}">
-            @csrf
-            {{-- @method('PUT') --}}
-        <input type="text" name="booking_id" value="{{$bookingdata->id}}" id="booking_id" hidden>
-        <div class="row">
-            <div class=" form-group col-md-4 ">
-                {{-- <label class="form-label" for="request_status">Request Status</label> --}}
-                <select class="w-100 form-control " name="payment_status" id="request_status" >
-                    <option value="" selected disabled>--update request status--</option>
-                    <option  value="pending" {{ App\Models\BookingStatus::bookingStatus($bookingdata->status) == 'pending' ? 'selected' : '' }}>Pending</option>
-                    <option value="accept" {{ App\Models\BookingStatus::bookingStatus($bookingdata->status) == 'accept' ? 'selected' : '' }}>Accepted</option>
-                    <option value="cancelled" {{ App\Models\BookingStatus::bookingStatus($bookingdata->status) == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
-                    <option value="waiting" {{ App\Models\BookingStatus::bookingStatus($bookingdata->status) == 'waiting' ? 'selected' : '' }}>Waiting</option>
-                    <option value="rejected" {{ App\Models\BookingStatus::bookingStatus($bookingdata->status) == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                    <option value="on_going" {{ App\Models\BookingStatus::bookingStatus($bookingdata->status) == 'on_going' ? 'selected' : '' }}>On Going</option>
-                    <option value="in_progress" {{ App\Models\BookingStatus::bookingStatus($bookingdata->status) == 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                    <option value="hold" {{ App\Models\BookingStatus::bookingStatus($bookingdata->status) == 'hold' ? 'selected' : '' }}>Hold</option>
-                    <option value="completed" {{ App\Models\BookingStatus::bookingStatus($bookingdata->status) == 'completed' ? 'selected' : '' }}>Completed</option>
-                </select>
-            </div>
-        
-            <div class=" form-group col-md-4">
-                {{-- <label for="payment_status">Payment Status</label> --}}
-                <select class="w-100 form-control " name="payment_status" id="payment_status" >
-                    <option value="" selected disabled>--update payment status--</option>
-                    <option value="pending" {{ optional($bookingdata->payment)->payment_status == 'pending' ? 'selected' : '' }} >Pending</option>
-                    <option value="failed" {{ optional($bookingdata->payment)->payment_status == 'failed' ? 'selected' : '' }}>Failed</option> 
-                    <option value="paid" {{ optional($bookingdata->payment)->payment_status == 'paid' ? 'selected' : '' }}>Paid</option>
-                </select>
-            </div>
-            <div class="d-flex justify-content-end col-md-4 align-items-center">
-                <button class="btn btn-primary" type="submit" id="submitButton">save</button>
-            </div>
-        </div>
-        </form>
-    </div>
-</div>
-
-<script>
-    document.getElementById('showFieldsButton').addEventListener('click', function() {
-        const requestStatus = document.getElementById('request_status');
-        requestStatus.classList.toggle('hidden');
-    });
-</script>
-
-<style>
-    .hidden {
-        display: none;
-    }
-</style>

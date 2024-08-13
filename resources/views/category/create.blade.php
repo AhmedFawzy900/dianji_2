@@ -13,7 +13,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12">
+            <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body">
                         {{ Form::model($categorydata,['method' => 'POST','route'=>'category.store', 'enctype'=>'multipart/form-data', 'data-toggle'=>"validator" ,'id'=>'category'] ) }}
@@ -83,8 +83,14 @@
                     </div>
                 </div>
             </div>
+            {{-- add tree --}}
+        
+            @include('components.category-tree', ['categories' => $categories])
+            {{-- end tree --}}
         </div>
     </div>
+
+
     <script>
         function preview() {
             category_image_preview.src = URL.createObjectURL(event.target.files[0]);

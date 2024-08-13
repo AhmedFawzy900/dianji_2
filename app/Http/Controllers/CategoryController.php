@@ -158,8 +158,9 @@ class CategoryController extends Controller
             $pageTitle = trans('messages.add_button_form',['form' => trans('messages.category')]);
             $categorydata = new Category;
         }
+        $categories = Category::with('subcategories.relatedSubcategory')->get();
         
-        return view('category.create', compact('pageTitle' ,'categorydata' ,'auth_user' ));
+        return view('category.create', compact('pageTitle' ,'categorydata' ,'auth_user','categories' ));
     }
 
     /**
