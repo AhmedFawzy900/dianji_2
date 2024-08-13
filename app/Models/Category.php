@@ -28,6 +28,11 @@ class Category extends BaseModel implements HasMedia
     {
         return $query->orderBy('updated_at', 'desc');
     }
+
+    public function subcategories()
+    {
+        return $this->hasMany(SubCategory::class, 'category_id');
+    }
     
     
 }
