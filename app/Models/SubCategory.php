@@ -12,7 +12,7 @@ class SubCategory extends BaseModel implements HasMedia
     use HasFactory, InteractsWithMedia,SoftDeletes;
     protected $table = 'sub_categories';
     protected $fillable = [
-        'name', 'description', 'is_featured', 'status' , 'category_id' , 'related_subcategory_id'
+        'name', 'description', 'is_featured', 'status' , 'category_id' , 'related_subcategory_id','image' , 'cover_image'
     ];
 
     protected $casts = [
