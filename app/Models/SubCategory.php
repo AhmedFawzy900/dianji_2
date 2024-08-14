@@ -31,9 +31,14 @@ class SubCategory extends BaseModel implements HasMedia
     {
         return $query->orderBy('updated_at', 'desc');
     }
-      // Define the relationship to the related subcategory
-      public function relatedSubcategory()
-      {
-          return $this->belongsTo(Subcategory::class, 'related_subcategory_id');
-      }
+    //   // Define the relationship to the related subcategory
+    //   public function relatedSubcategory()
+    //   {
+    //       return $this->belongsTo(Subcategory::class, 'related_subcategory_id');
+    //   }
+
+    public function subcategorieslevel3()
+    {
+        return $this->hasMany(SubCategoryLevel3::class);
+    }
 }
