@@ -182,11 +182,27 @@ class CategoryController extends Controller
 		}
         if(!$request->is('api/*')) {
             if($request->id == null ){
-                if(!isset($data['category_image'])){
+                if(!isset($data['image'])){
                     return  redirect()->back()->withErrors(__('validation.required',['attribute' =>'attachments']));
                 }
             }
         }
+
+         // Handle category_image upload
+        if ($request->hasFile('image')) {
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->storeAs('categories', $imageName);
+            $data['image'] = $imageName;
+        }
+
+        // Handle cover_image upload
+        if ($request->hasFile('cover_image')) {
+            $coverImageName = time().'_cover.'.$request->cover_image->extension();
+            $request->cover_image->storeAs('categories', $coverImageName);
+            $data['cover_image'] = $coverImageName;
+        }
+
+        // dd($data);
         $result = Category::updateOrCreate(['id' => $data['id'] ],$data);
 
         storeMediaFile($result,$request->category_image, 'category_image');

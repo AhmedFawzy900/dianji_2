@@ -14,7 +14,7 @@ class Category extends BaseModel implements HasMedia
     use HasFactory,HasRoles,InteractsWithMedia,SoftDeletes;
     protected $table = 'categories';
     protected $fillable = [
-        'name', 'description', 'is_featured', 'status' , 'color'
+        'name', 'description', 'is_featured', 'status' , 'color' , 'zones' , 'image' , 'cover_image' , 'commission'
     ];
     protected $casts = [
         'status'    => 'integer',

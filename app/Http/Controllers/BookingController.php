@@ -23,6 +23,7 @@ use App\Models\ServiceAddon;
 use App\Models\BookingRating;
 use App\Models\Setting;
 use App\Models\Country;
+
 class BookingController extends Controller
 {
     use NotificationTrait;
@@ -36,27 +37,26 @@ class BookingController extends Controller
         $filter = [
             'status' => $request->status,
         ];
-        if($request->query('status')) {
+        if ($request->query('status')) {
             $filter['status'] = 'waiting';
         }
-        $pageTitle = __('messages.list_form_title',['form' => __('messages.booking')] );
+        $pageTitle = __('messages.list_form_title', ['form' => __('messages.booking')]);
         $auth_user = authSession();
         $assets = ['datatable'];
-        return view('booking.index', compact('pageTitle','auth_user','assets','filter'));
+        return view('booking.index', compact('pageTitle', 'auth_user', 'assets', 'filter'));
     }
 
 
-    public function index_data(DataTables $datatable,Request $request)
+    public function index_data(DataTables $datatable, Request $request)
     {
-        
+
         $query = Booking::query()->myBooking();
-        
-        
+
+
         if (isset($filter)) {
             if (isset($filter['column_status'])) {
                 $query->where('status', $filter['column_status']);
             }
-        
         }
         if (auth()->user()->hasAnyRole(['admin'])) {
             $query->withTrashed();
@@ -64,69 +64,86 @@ class BookingController extends Controller
 
         return $datatable->eloquent($query)
             ->addColumn('check', function ($row) {
-                return '<input type="checkbox" class="form-check-input select-table-row"  id="datatable-row-'.$row->id.'"  name="datatable_ids[]" value="'.$row->id.'" data-type="booking" onclick="dataTableRowCheck('.$row->id.',this)">';
+                return '<input type="checkbox" class="form-check-input select-table-row"  id="datatable-row-' . $row->id . '"  name="datatable_ids[]" value="' . $row->id . '" data-type="booking" onclick="dataTableRowCheck(' . $row->id . ',this)">';
             })
-            ->editColumn('id' , function ($query){
-                return "<a class='btn-link btn-link-hover' href=" .route('booking.show', $query->id).">#".$query->id ."</a>";
+            ->editColumn('id', function ($query) {
+                return "<a class='btn-link btn-link-hover' href=" . route('booking.show', $query->id) . ">#" . $query->id . "</a>";
             })
-            ->editColumn('customer_id' , function ($query){
+            ->editColumn('customer_id', function ($query) {
                 return view('booking.customer', compact('query'));
             })
-            ->filterColumn('customer_id',function($query,$keyword){
-                $query->whereHas('customer',function ($q) use($keyword){
-                    $q->where('display_name','like','%'.$keyword.'%');
+            ->filterColumn('customer_id', function ($query, $keyword) {
+                $query->whereHas('customer', function ($q) use ($keyword) {
+                    $q->where('display_name', 'like', '%' . $keyword . '%');
                 });
             })
-            ->editColumn('service_id' , function ($query){
+            ->editColumn('service_id', function ($query) {
                 $service_name = ($query->service_id != null && isset($query->service)) ? $query->service->name : "";
-                return "<a class='btn-link btn-link-hover' href=" .route('booking.show', $query->id).">".$service_name ."</a>";
+                return "<a class='btn-link btn-link-hover' href=" . route('booking.show', $query->id) . ">" . $service_name . "</a>";
             })
-            ->filterColumn('service_id',function($query,$keyword){
-                $query->whereHas('service',function ($q) use($keyword){
-                    $q->where('name','like','%'.$keyword.'%');
+            ->filterColumn('service_id', function ($query, $keyword) {
+                $query->whereHas('service', function ($q) use ($keyword) {
+                    $q->where('name', 'like', '%' . $keyword . '%');
                 });
             })
-            ->editColumn('date' , function ($query){
-                $sitesetup = Setting::where('type','site-setup')->where('key', 'site-setup')->first();
+            ->editColumn('date', function ($query) {
+                $sitesetup = Setting::where('type', 'site-setup')->where('key', 'site-setup')->first();
                 $datetime = $sitesetup ? json_decode($sitesetup->value) : null;
-                        
+
                 $date = optional($datetime)->date_format && optional($datetime)->time_format
-                ? date(optional($datetime)->date_format, strtotime($query->date)) . ' / ' . date(optional($datetime)->time_format, strtotime($query->date))
-                : $query->date;
-                
+                    ? date(optional($datetime)->date_format, strtotime($query->date)) . ' / ' . date(optional($datetime)->time_format, strtotime($query->date))
+                    : $query->date;
+
                 return $date;
             })
-            ->editColumn('provider_id' , function ($query){
+            ->editColumn('provider_id', function ($query) {
                 return view('booking.provider', compact('query'));
             })
-            ->filterColumn('provider_id',function($query,$keyword){
-                $query->whereHas('provider',function ($q) use($keyword){
-                    $q->where('display_name','like','%'.$keyword.'%');
+            ->filterColumn('provider_id', function ($query, $keyword) {
+                $query->whereHas('provider', function ($q) use ($keyword) {
+                    $q->where('display_name', 'like', '%' . $keyword . '%');
                 });
             })
-            ->editColumn('status' , function ($query){
+            ->editColumn('status', function ($query) {
                 return bookingstatus(BookingStatus::bookingStatus($query->status));
             })
-            ->editColumn('payment_id' , function ($query){
+            ->editColumn('payment_id', function ($query) {
                 $payment_status = optional($query->payment)->payment_status;
-                if($payment_status !== 'paid'){
-                    $status = '<span class="badge badge-pay-pending">'.__('messages.pending').'</span>';
-                }else{
-                    $status = '<span class="badge badge-paid">'.__('messages.paid').'</span>';
+                if ($payment_status !== 'paid') {
+                    $status = '<span class="badge badge-pay-pending">' . __('messages.pending') . '</span>';
+                } else {
+                    $status = '<span class="badge badge-paid">' . __('messages.paid') . '</span>';
                 }
                 return  $status;
             })
-            ->filterColumn('payment_id',function($query,$keyword){
-                $query->whereHas('payment',function ($q) use($keyword){
-                    $q->where('payment_status','like',$keyword.'%');
+            ->filterColumn('payment_id', function ($query, $keyword) {
+                $query->whereHas('payment', function ($q) use ($keyword) {
+                    $q->where('payment_status', 'like', $keyword . '%');
                 });
             })
-            ->editColumn('total_amount' , function ($query){
+            ->editColumn('total_amount', function ($query) {
                 return $query->total_amount ? getPriceFormat($query->total_amount) : '-';
             })
 
-            ->addColumn('action', function($booking){
-                return view('booking.action',compact('booking'))->render();
+            // Adding new column for orders not approved after 24 hours
+            ->addColumn('approval_alert', function ($query) {
+                if ($query->status == 'pending' && Carbon::now()->diffInHours($query->updated_at) > 24) {
+                    return '<span class="badge badge-warning">Approval Pending > 24h</span>';
+                }
+                return '<div className="text-center"> - </div>';
+            })
+
+            // Adding new column for orders exceeding the specified time and not started
+            ->addColumn('time_exceeded_alert', function ($query) {
+                if ($query->status == 'pending'  && Carbon::now()->gt(Carbon::parse($query->date))) {
+                    return '<span class="badge badge-light">Time Exceeded</span>';
+                }
+                return '-';
+            })
+
+
+            ->addColumn('action', function ($booking) {
+                return view('booking.action', compact('booking'))->render();
             })
 
             ->editColumn('updated_at', function ($query) {
@@ -138,7 +155,7 @@ class BookingController extends Controller
                 }
             })
             ->addIndexColumn()
-            ->rawColumns(['action','status','payment_id','service_id','id','check'])
+            ->rawColumns(['action', 'status', 'payment_id', 'service_id', 'id', 'check', 'approval_alert', 'time_exceeded_alert'])
             ->toJson();
     }
 
@@ -178,15 +195,15 @@ class BookingController extends Controller
 
         return response()->json(['status' => true, 'message' => $message]);
     }
-    
+
 
 
     public function assignProviderForm($id)
-    {   
-        
+    {
+
         $bookingdata = Booking::findOrFail($id);
         $pageTitle = __('Assign to Provider');
-        
+
         return view('booking.assign_to_provider_form', compact('bookingdata', 'pageTitle'));
     }
 
@@ -197,7 +214,7 @@ class BookingController extends Controller
             'provider_id.*' => 'exists:users,id',
             'id' => 'required|exists:bookings,id',
         ]);
-    
+
         $booking = Booking::find($request->id);
 
         // Update the provider_id
@@ -210,10 +227,10 @@ class BookingController extends Controller
             'status' => 'success',
             'message' => 'Provider updated successfully.',
         ]);
-    }   
+    }
 
 
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -226,14 +243,14 @@ class BookingController extends Controller
         $auth_user = authSession();
 
         $bookingdata = Booking::find($id);
-        $pageTitle = __('messages.update_form_title',['form'=> __('messages.booking')]);
+        $pageTitle = __('messages.update_form_title', ['form' => __('messages.booking')]);
 
-        if($bookingdata == null){
-            $pageTitle = __('messages.add_button_form',['form' => __('messages.booking')]);
+        if ($bookingdata == null) {
+            $pageTitle = __('messages.add_button_form', ['form' => __('messages.booking')]);
             $bookingdata = new Booking;
         }
 
-        return view('booking.create', compact('pageTitle' ,'bookingdata' ,'auth_user' ));
+        return view('booking.create', compact('pageTitle', 'bookingdata', 'auth_user'));
     }
 
     /**
@@ -248,35 +265,33 @@ class BookingController extends Controller
 
         $data['tax'] = null;
 
-        if($request->id == null)
-        {
-            $data['status'] = !empty($data['status']) ? $data['status'] :'pending';
+        if ($request->id == null) {
+            $data['status'] = !empty($data['status']) ? $data['status'] : 'pending';
         }
 
-        if(isset($data['booking_slot'])){
+        if (isset($data['booking_slot'])) {
             $date = isset($request->date) ? date('Y-m-d', strtotime($request->date)) : date('Y-m-d');
             $time = date('H:i:s', strtotime($data['booking_slot']));
             $data['date'] = $date . ' ' . $time;
-        }
-        else{
-            $data['date'] = isset($request->date) ? date('Y-m-d H:i:s',strtotime($request->date)) : date('Y-m-d H:i:s');
+        } else {
+            $data['date'] = isset($request->date) ? date('Y-m-d H:i:s', strtotime($request->date)) : date('Y-m-d H:i:s');
         }
         $service_data = Service::find($data['service_id']);
 
-        $data['provider_id'] = !empty($data['provider_id']) ? $data['provider_id']: $service_data->provider_id;
+        $data['provider_id'] = !empty($data['provider_id']) ? $data['provider_id'] : $service_data->provider_id;
 
-        if($request->has('tax') && $request->tax != null) {
+        if ($request->has('tax') && $request->tax != null) {
             $data['tax'] = json_encode($request->tax);
         }
 
-        if($request->coupon_id != null) {
-            $coupons = Coupon::with('serviceAdded')->where('code',$request->coupon_id)
-                ->where('expire_date','>',date('Y-m-d H:i'))->where('status',1)
-                ->whereHas('serviceAdded', function($coupon) use($service_data){
-                    $coupon->where('service_id', $service_data->id );
+        if ($request->coupon_id != null) {
+            $coupons = Coupon::with('serviceAdded')->where('code', $request->coupon_id)
+                ->where('expire_date', '>', date('Y-m-d H:i'))->where('status', 1)
+                ->whereHas('serviceAdded', function ($coupon) use ($service_data) {
+                    $coupon->where('service_id', $service_data->id);
                 })->first();
-            if( $coupons == null ) {
-                return comman_message_response( __('messages.invalid_coupon_code'),406);
+            if ($coupons == null) {
+                return comman_message_response(__('messages.invalid_coupon_code'), 406);
             } else {
                 $data['coupon_id'] = $coupons->id;
             }
@@ -292,7 +307,7 @@ class BookingController extends Controller
         $this->sendNotification($activity_data);
 
 
-        if($data['coupon_id'] != null) {
+        if ($data['coupon_id'] != null) {
             $coupons = Coupon::find($data['coupon_id']);
 
             $coupon_data = [
@@ -304,7 +319,7 @@ class BookingController extends Controller
 
             $result->couponAdded()->create($coupon_data);
         }
-        if($request->has('booking_address_id') && $request->booking_address_id != null) {
+        if ($request->has('booking_address_id') && $request->booking_address_id != null) {
             $booking_address_mapping = ProviderAddressMapping::find($data['booking_address_id']);
 
             $booking_address_data = [
@@ -328,54 +343,53 @@ class BookingController extends Controller
                         'price' => $booking_serviceaddon_mapping->price,
                     ];
 
-                   $result->bookingAddonService()->create($booking_serviceaddon_data);
+                    $result->bookingAddonService()->create($booking_serviceaddon_data);
                 }
             }
         }
 
 
-        if($request->has('booking_package') && $request->booking_package != null) {
+        if ($request->has('booking_package') && $request->booking_package != null) {
             $booking_package = [
-               'booking_id' => $result->id,
-               'service_package_id' => $data['booking_package']['id'],
-               'provider_id' => $data['provider_id'],
-               'name' => $data['booking_package']['name'],
-               'is_featured' => $data['booking_package']['is_featured'],
-               'package_type' => $data['booking_package']['package_type'],
-               'price' => $data['booking_package']['price'],
+                'booking_id' => $result->id,
+                'service_package_id' => $data['booking_package']['id'],
+                'provider_id' => $data['provider_id'],
+                'name' => $data['booking_package']['name'],
+                'is_featured' => $data['booking_package']['is_featured'],
+                'package_type' => $data['booking_package']['package_type'],
+                'price' => $data['booking_package']['price'],
             ];
-            if(!empty($data['booking_package']['start_at'])){
+            if (!empty($data['booking_package']['start_at'])) {
                 $booking_package['start_at'] = $data['booking_package']['start_at'];
             }
-            if(!empty($data['booking_package']['end_at'])){
+            if (!empty($data['booking_package']['end_at'])) {
                 $booking_package['end_at'] = $data['booking_package']['end_at'];
             }
-            if(!empty($data['booking_package']['subcategory_id'])){
+            if (!empty($data['booking_package']['subcategory_id'])) {
                 $booking_package['subcategory_id'] = $data['booking_package']['subcategory_id'];
             }
-            if(!empty($data['booking_package']['category_id'])){
+            if (!empty($data['booking_package']['category_id'])) {
                 $booking_package['category_id'] = $data['booking_package']['category_id'];
             }
             $result->bookingPackage()->create($booking_package);
-       }
-        if(!empty($data['type']) && $data['type'] === 'user_post_job'){
-            $post_request = PostJobRequest::where('id',$data['post_request_id'])->first();
-            $post_request->date = isset($request->date) ? date('Y-m-d H:i:s',strtotime($request->date)) : date('Y-m-d H:i:s');
+        }
+        if (!empty($data['type']) && $data['type'] === 'user_post_job') {
+            $post_request = PostJobRequest::where('id', $data['post_request_id'])->first();
+            $post_request->date = isset($request->date) ? date('Y-m-d H:i:s', strtotime($request->date)) : date('Y-m-d H:i:s');
             $post_request->update();
         }
-		if($result->wasRecentlyCreated){
-			$message = __('messages.save_form',[ 'form' => __('messages.booking') ] );
-		}
+        if ($result->wasRecentlyCreated) {
+            $message = __('messages.save_form', ['form' => __('messages.booking')]);
+        }
 
-        if($request->is('api/*')) {
+        if ($request->is('api/*')) {
             $response = [
-                'message'=>$message,
+                'message' => $message,
                 'booking_id' => $result->id
             ];
             return comman_custom_response($response);
-		}
-		return  redirect(route('booking.index'))->withSuccess($message);
-
+        }
+        return  redirect(route('booking.index'))->withSuccess($message);
     }
 
     /**
@@ -386,30 +400,28 @@ class BookingController extends Controller
      */
     public function show($id)
     {
-      $auth_user = authSession();
+        $auth_user = authSession();
 
-         $user = auth()->user();
-         $user->last_notification_seen = now();
-         $user->save();
+        $user = auth()->user();
+        $user->last_notification_seen = now();
+        $user->save();
 
-         if(count($user->unreadNotifications) > 0 ) {
+        if (count($user->unreadNotifications) > 0) {
 
-           foreach($user->unreadNotifications as $notifications){
+            foreach ($user->unreadNotifications as $notifications) {
 
-              if($notifications['data']['id'] == $id){
+                if ($notifications['data']['id'] == $id) {
 
-                 $notification = $user->unreadNotifications->where('id', $notifications['id'])->first();
-                if($notification){
-                     $notification->markAsRead();
-                       }
-                  }
-
-             }
-
+                    $notification = $user->unreadNotifications->where('id', $notifications['id'])->first();
+                    if ($notification) {
+                        $notification->markAsRead();
+                    }
+                }
+            }
         }
 
 
-        $bookingdata = Booking::with('bookingExtraCharge','payment')->myBooking()->find($id);
+        $bookingdata = Booking::with('bookingExtraCharge', 'payment')->myBooking()->find($id);
 
 
         $tabpage = 'info';
@@ -437,11 +449,11 @@ class BookingController extends Controller
 
         $bookingdata = Booking::myBooking()->find($id);
 
-        $pageTitle = __('messages.update_form_title',['form'=> __('messages.booking')]);
+        $pageTitle = __('messages.update_form_title', ['form' => __('messages.booking')]);
         $relation = [
-            'status' => BookingStatus::where('status',1)->orderBy('sequence','ASC')->get()->pluck('label', 'value'),
+            'status' => BookingStatus::where('status', 1)->orderBy('sequence', 'ASC')->get()->pluck('label', 'value'),
         ];
-        return view('booking.edit', compact('pageTitle' ,'bookingdata' ,'auth_user' )+$relation);
+        return view('booking.edit', compact('pageTitle', 'bookingdata', 'auth_user') + $relation);
     }
 
     /**
@@ -453,49 +465,49 @@ class BookingController extends Controller
      */
     public function update(BookingUpdateRequest $request, $id)
     {
-        if(demoUserPermission()){
+        if (demoUserPermission()) {
             return  redirect()->back()->withErrors(trans('messages.demo_permission_denied'));
         }
         $data = $request->all();
 
 
 
-        $data['date'] = isset($request->date) ? date('Y-m-d H:i:s',strtotime($request->date)) : date('Y-m-d H:i:s');
-        $data['start_at'] = isset($request->start_at) ? date('Y-m-d H:i:s',strtotime($request->start_at)) : null;
-        $data['end_at'] = isset($request->end_at) ? date('Y-m-d H:i:s',strtotime($request->end_at)) : null;
+        $data['date'] = isset($request->date) ? date('Y-m-d H:i:s', strtotime($request->date)) : date('Y-m-d H:i:s');
+        $data['start_at'] = isset($request->start_at) ? date('Y-m-d H:i:s', strtotime($request->start_at)) : null;
+        $data['end_at'] = isset($request->end_at) ? date('Y-m-d H:i:s', strtotime($request->end_at)) : null;
 
 
         $bookingdata = Booking::find($id);
-        $paymentdata = Payment::where('booking_id',$id)->first();
-        if($data['status'] === 'hold'){
-            if($bookingdata->start_at == null && $bookingdata->end_at == null){
-                $duration_diff = duration($data['start_at'] ,$data['end_at'] ,'in_minute');
+        $paymentdata = Payment::where('booking_id', $id)->first();
+        if ($data['status'] === 'hold') {
+            if ($bookingdata->start_at == null && $bookingdata->end_at == null) {
+                $duration_diff = duration($data['start_at'], $data['end_at'], 'in_minute');
                 $data['duration_diff'] = $duration_diff;
-            }else{
-                if($bookingdata->status == $data['status']){
+            } else {
+                if ($bookingdata->status == $data['status']) {
                     $booking_start_date = $bookingdata->start_at;
                     $request_start_date = $data['start_at'];
-                    if($request_start_date > $booking_start_date){
-                        $msg = __('messages.already_in_status',[ 'status' => $data['status'] ] );
+                    if ($request_start_date > $booking_start_date) {
+                        $msg = __('messages.already_in_status', ['status' => $data['status']]);
                         return redirect()->back()->withSuccess($msg);
                     }
-                }else{
+                } else {
                     $duration_diff = $bookingdata->duration_diff;
-                    $new_diff = duration($bookingdata->start_at ,$bookingdata->end_at ,'in_minute');
+                    $new_diff = duration($bookingdata->start_at, $bookingdata->end_at, 'in_minute');
                     $data['duration_diff'] = $duration_diff + $new_diff;
                 }
             }
         }
-        if($bookingdata->status != $data['status']) {
+        if ($bookingdata->status != $data['status']) {
             $activity_type = 'update_booking_status';
         }
-        if($data['status'] == 'cancelled'){
+        if ($data['status'] == 'cancelled') {
             $activity_type = 'cancel_booking';
         }
         $data['reason'] = isset($data['reason']) ? $data['reason'] : null;
         $old_status = $bookingdata->status;
         $bookingdata->update($data);
-        if($old_status != $data['status']){
+        if ($old_status != $data['status']) {
             $bookingdata->old_status = $old_status;
 
             $activity_data = [
@@ -504,34 +516,32 @@ class BookingController extends Controller
                 'booking' => $bookingdata,
             ];
             $this->sendNotification($activity_data);
-
         }
-        if($bookingdata->payment_id != null){
+        if ($bookingdata->payment_id != null) {
             $data['payment_status'] = isset($data['payment_status']) ? $data['payment_status'] : 'pending';
             $paymentdata->update($data);
 
-            if($bookingdata->payment_id != null){
+            if ($bookingdata->payment_id != null) {
                 $data['payment_status'] = isset($data['payment_status']) ? $data['payment_status'] : 'pending';
                 $paymentdata->update($data);
 
                 $activity_data = [
                     'activity_type' => 'payment_message_status',
-                    'payment_status'=> $data['payment_status'],
+                    'payment_status' => $data['payment_status'],
                     'booking_id' => $id,
                     'booking' => $bookingdata,
                 ];
                 $this->sendNotification($activity_data);
-
             }
         }
-        $message = __('messages.update_form',[ 'form' => __('messages.booking') ] );
+        $message = __('messages.update_form', ['form' => __('messages.booking')]);
 
-        if($request->is('api/*')) {
+        if ($request->is('api/*')) {
 
             return comman_message_response($message);
-		}
+        }
 
-		return  redirect(route('booking.index'))->withSuccess($message);
+        return  redirect(route('booking.index'))->withSuccess($message);
     }
 
     /**
@@ -542,26 +552,27 @@ class BookingController extends Controller
      */
     public function destroy($id)
     {
-        if(demoUserPermission()){
+        if (demoUserPermission()) {
             return  redirect()->back()->withErrors(trans('messages.demo_permission_denied'));
         }
         $booking = Booking::find($id);
 
-        $msg = __('messages.msg_fail_to_delete',['item' => __('messages.booking')] );
+        $msg = __('messages.msg_fail_to_delete', ['item' => __('messages.booking')]);
 
-        if($booking != '') {
-            Notification::whereJsonContains('data->id',$booking->id)->delete();
+        if ($booking != '') {
+            Notification::whereJsonContains('data->id', $booking->id)->delete();
             $booking->delete();
-            $msg = __('messages.msg_deleted',['name' => __('messages.booking')] );
+            $msg = __('messages.msg_deleted', ['name' => __('messages.booking')]);
         }
-        return comman_custom_response(['message'=> $msg, 'status' => true]);
+        return comman_custom_response(['message' => $msg, 'status' => true]);
     }
 
-    public function  bookingAssignForm(Request $request){
+    public function  bookingAssignForm(Request $request)
+    {
 
         $bookingdata = Booking::find($request->id);
-        $pageTitle = __('messages.assign_form_title',['form'=> __('messages.booking')]);
-        return view('booking.assigned_form',compact('bookingdata','pageTitle'));
+        $pageTitle = __('messages.assign_form_title', ['form' => __('messages.booking')]);
+        return view('booking.assigned_form', compact('bookingdata', 'pageTitle'));
     }
 
     public function bookingAssigned(Request $request)
@@ -569,7 +580,7 @@ class BookingController extends Controller
         $bookingdata =  Booking::find($request->id);
 
         $assigned_handyman_ids = [];
-        if($bookingdata->handymanAdded()->count() > 0){
+        if ($bookingdata->handymanAdded()->count() > 0) {
             $assigned_handyman_ids = $bookingdata->handymanAdded()->pluck('handyman_id')->toArray();
             $bookingdata->handymanAdded()->delete();
             $message = __('messages.transfer_to_handyman');
@@ -580,22 +591,22 @@ class BookingController extends Controller
         }
 
         $remove_notification_id = [];
-        if($request->handyman_id != null) {
-            foreach($request->handyman_id as $handyman) {
+        if ($request->handyman_id != null) {
+            foreach ($request->handyman_id as $handyman) {
                 $assign_to_handyman = [
                     'booking_id'   => $bookingdata->id,
                     'handyman_id'  => $handyman
                 ];
-                $remove_notification_id = removeArrayValue($assigned_handyman_ids,$handyman);
+                $remove_notification_id = removeArrayValue($assigned_handyman_ids, $handyman);
                 $bookingdata->handymanAdded()->insert($assign_to_handyman);
             }
         }
 
-        if(!empty($remove_notification_id)){
-            $search = "id".'":'.$bookingdata->id;
+        if (!empty($remove_notification_id)) {
+            $search = "id" . '":' . $bookingdata->id;
 
-            Notification::whereIn('notifiable_id',$remove_notification_id)
-                ->whereJsonContains('data->id',$bookingdata->id)
+            Notification::whereIn('notifiable_id', $remove_notification_id)
+                ->whereJsonContains('data->id', $bookingdata->id)
                 ->delete();
         }
 
@@ -609,32 +620,32 @@ class BookingController extends Controller
         ];
         $this->sendNotification($activity_data);
 
-        $message = __('messages.save_form',[ 'form' => __('messages.booking') ] );
-        if($request->is('api/*')) {
+        $message = __('messages.save_form', ['form' => __('messages.booking')]);
+        if ($request->is('api/*')) {
             return comman_message_response($message);
-		}
+        }
 
-        return response()->json(['status' => true,'event' => 'callback' , 'message' => $message]);
+        return response()->json(['status' => true, 'event' => 'callback', 'message' => $message]);
     }
 
     public function action(Request $request)
     {
         $id = $request->id;
         $type = $request->type;
-        $booking_data = Booking::withTrashed()->where('id',$id)->first();
-        $msg = __('messages.not_found_entry',['name' => __('messages.booking')] );
-        if($request->type === 'restore'){
-            if($booking_data != ''){
+        $booking_data = Booking::withTrashed()->where('id', $id)->first();
+        $msg = __('messages.not_found_entry', ['name' => __('messages.booking')]);
+        if ($request->type === 'restore') {
+            if ($booking_data != '') {
                 $booking_data->restore();
-                $msg = __('messages.msg_restored',['name' => __('messages.booking')] );
+                $msg = __('messages.msg_restored', ['name' => __('messages.booking')]);
             }
         }
-        if($request->type === 'forcedelete'){
+        if ($request->type === 'forcedelete') {
             $booking_data->forceDelete();
-            $msg = __('messages.msg_forcedelete',['name' => __('messages.booking')] );
+            $msg = __('messages.msg_forcedelete', ['name' => __('messages.booking')]);
         }
 
-        return comman_custom_response(['message'=> $msg , 'status' => true]);
+        return comman_custom_response(['message' => $msg, 'status' => true]);
     }
     public function bookingDetails(Request $request, $id)
     {
@@ -644,7 +655,7 @@ class BookingController extends Controller
         foreach ($providerdata->providerBooking as $booking) {
             $booking_id = $booking->id;
             $provider_name = optional($booking->provider)->display_name ?? '-';
-            $provider_image = getSingleMedia(optional($booking->provider),'profile_image', null);
+            $provider_image = getSingleMedia(optional($booking->provider), 'profile_image', null);
             $provider_contact = optional($booking->provider)->contact_number ?? '-';
             $provider_email = optional($booking->provider)->email ?? '-';
             $amount = $booking->amount;
@@ -673,15 +684,15 @@ class BookingController extends Controller
                     $btn = "<a href=" . route('booking.show', $booking_id) . "><i class='fas fa-eye'></i></a>";
                     return $btn;
                 })
-                ->editColumn('provider_name' , function ($row){
+                ->editColumn('provider_name', function ($row) {
                     return view('booking.provider', compact('row'));
                 })
-                ->editColumn('payment_status' , function ($row){
+                ->editColumn('payment_status', function ($row) {
                     $payment_status = $row['payment_status'];
-                    if($payment_status == 'pending'){
-                        $status = '<span class="badge badge-danger">'.__('messages.pending').'</span>';
-                    }else{
-                        $status = '<span class="badge badge-success">'.__('messages.paid').'</span>';
+                    if ($payment_status == 'pending') {
+                        $status = '<span class="badge badge-danger">' . __('messages.pending') . '</span>';
+                    } else {
+                        $status = '<span class="badge badge-success">' . __('messages.paid') . '</span>';
                     }
                     return  $status;
                 })
@@ -694,8 +705,8 @@ class BookingController extends Controller
                         $sitesetup = Setting::where('type', 'site-setup')->where('key', 'site-setup')->first();
                         $datetime = $sitesetup ? json_decode($sitesetup->value) : null;
                         $date = optional($datetime)->date_format && optional($datetime)->time_format
-                        ? date(optional($datetime)->date_format, strtotime($startAt)) . ' / ' . date(optional($datetime)->time_format, strtotime($startAt))
-                        : $startAt;
+                            ? date(optional($datetime)->date_format, strtotime($startAt)) . ' / ' . date(optional($datetime)->time_format, strtotime($startAt))
+                            : $startAt;
                         return $date;
                     }
                     return null;
@@ -709,16 +720,16 @@ class BookingController extends Controller
                         $sitesetup = Setting::where('type', 'site-setup')->where('key', 'site-setup')->first();
                         $datetime = $sitesetup ? json_decode($sitesetup->value) : null;
                         $date = optional($datetime)->date_format && optional($datetime)->time_format
-                        ? date(optional($datetime)->date_format, strtotime($endAt)) . ' / ' . date(optional($datetime)->time_format, strtotime($endAt))
-                        : $endAt;
+                            ? date(optional($datetime)->date_format, strtotime($endAt)) . ' / ' . date(optional($datetime)->time_format, strtotime($endAt))
+                            : $endAt;
                         return $date;
                     }
                     return null;
                 })
-                ->editColumn('amount' , function ($row){
+                ->editColumn('amount', function ($row) {
                     return $row['amount'] ? getPriceFormat($row['amount']) : '-';
                 })
-                ->rawColumns(['action','payment_status','amount','check'])
+                ->rawColumns(['action', 'payment_status', 'amount', 'check'])
                 ->make(true);
         }
         if (empty($providerdata)) {
@@ -750,26 +761,26 @@ class BookingController extends Controller
     }
     public function createPDF($id)
     {
-        $data =AppSetting::take(1)->first();
-    $bookingdata = Booking::with('handymanAdded', 'payment', 'bookingExtraCharge')->myBooking()->find($id);
-    $pdf = Pdf::loadView('booking.invoice',['bookingdata'=>$bookingdata ,'data'=> $data]);
-    return $pdf->download('invoice.pdf');
+        $data = AppSetting::take(1)->first();
+        $bookingdata = Booking::with('handymanAdded', 'payment', 'bookingExtraCharge')->myBooking()->find($id);
+        $pdf = Pdf::loadView('booking.invoice', ['bookingdata' => $bookingdata, 'data' => $data]);
+        return $pdf->download('invoice.pdf');
     }
 
-    
+
     public function updateStatus(Request $request)
     {
-        
+
         switch ($request->type) {
             case 'payment':
-                $data = Payment::where('booking_id',$request->bookingId)->update(['payment_status'=>$request->status]);
+                $data = Payment::where('booking_id', $request->bookingId)->update(['payment_status' => $request->status]);
                 break;
             default:
-                $data = Booking::find($request->bookingId)->update(['status'=>$request->status]);
+                $data = Booking::find($request->bookingId)->update(['status' => $request->status]);
                 break;
         }
 
-        return comman_custom_response(['message'=> 'Status Updated' , 'status' => true]);
+        return comman_custom_response(['message' => 'Status Updated', 'status' => true]);
         // try {
         //     // Find the booking and update it...
         //     if ($request->request_status != null ) {
@@ -798,10 +809,10 @@ class BookingController extends Controller
         $rating_data = $request->all();
         $result = BookingRating::updateOrCreate(['id' => $request->id], $rating_data);
 
-        $message = __('messages.update_form',[ 'form' => __('messages.rating') ] );
-		if($result->wasRecentlyCreated){
-			$message = __('messages.save_form',[ 'form' => __('messages.rating') ] );
-		}
+        $message = __('messages.update_form', ['form' => __('messages.rating')]);
+        if ($result->wasRecentlyCreated) {
+            $message = __('messages.save_form', ['form' => __('messages.rating')]);
+        }
 
         return  redirect()->back()->withSuccess($message);
     }
@@ -819,7 +830,7 @@ class BookingController extends Controller
         } else {
             $payment_data = Payment::create($data);
         }
-        $sitesetup = Setting::where('type','site-setup')->where('key', 'site-setup')->first();
+        $sitesetup = Setting::where('type', 'site-setup')->where('key', 'site-setup')->first();
         $sitesetupdata = $sitesetup ? json_decode($sitesetup->value, true) : null;
 
         $country_id = $sitesetupdata['default_currency'] ?? null;
@@ -841,53 +852,52 @@ class BookingController extends Controller
     }
 
 
-     public function createStripePayment(Request $request){
+    public function createStripePayment(Request $request)
+    {
 
         $data = $request->all();
 
         $checkout_session = getstripepayments($data);
 
-        if(isset($checkout_session['message'])) {
+        if (isset($checkout_session['message'])) {
 
             return comman_custom_response($checkout_session);
+        } else {
+            Payment::where('booking_id', $data['booking_id'])->update(['other_transaction_detail' => $checkout_session['id']]);
 
-        }else{
-             Payment::where('booking_id', $data['booking_id'])->update(['other_transaction_detail' => $checkout_session['id']]);
-
-             return comman_custom_response($checkout_session);
+            return comman_custom_response($checkout_session);
         }
+    }
 
-     }
-
-     public function saveStripePayment(Request $request, $id){
+    public function saveStripePayment(Request $request, $id)
+    {
 
         $type = $request->type;
 
-        $result = Payment::where('booking_id',$id)->first();
+        $result = Payment::where('booking_id', $id)->first();
 
-        $stripe_session_id= $result->other_transaction_detail;
-        $payment_type= $result->payment_type;
+        $stripe_session_id = $result->other_transaction_detail;
+        $payment_type = $result->payment_type;
 
-        $session_object=getstripePaymnetId($stripe_session_id,$payment_type);
+        $session_object = getstripePaymnetId($stripe_session_id, $payment_type);
 
-        if($session_object['payment_intent'] !== '' && $session_object['payment_status'] == 'paid') {
+        if ($session_object['payment_intent'] !== '' && $session_object['payment_status'] == 'paid') {
 
-           $result->txn_id =$session_object['payment_intent'];
+            $result->txn_id = $session_object['payment_intent'];
 
-            if($type == 'advance_payment'){
+            if ($type == 'advance_payment') {
 
-                $result->payment_status='advanced_paid';
-            }else{
+                $result->payment_status = 'advanced_paid';
+            } else {
 
-                $result->payment_status='paid';
+                $result->payment_status = 'paid';
             }
-
         };
 
         $result->update();
 
         $booking = Booking::find($id);
-        if(!empty($result) && $result->payment_status == 'advanced_paid'){
+        if (!empty($result) && $result->payment_status == 'advanced_paid') {
             $booking->advance_paid_amount  = $result->total_amount;
             $booking->status  = 'pending';
         }
@@ -896,17 +906,12 @@ class BookingController extends Controller
 
         $activity_data = [
             'activity_type' => 'payment_message_status',
-            'payment_status'=>  str_replace("_"," ",ucfirst($result->payment_status)),
+            'payment_status' =>  str_replace("_", " ", ucfirst($result->payment_status)),
             'booking_id' => $booking->id,
             'booking' => $booking,
         ];
         $this->sendNotification($activity_data);
 
         return redirect('/booking-list');
-
-     }
-
-
-    
+    }
 }
-
