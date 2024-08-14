@@ -15,7 +15,6 @@ class CreateSubcategoryLevel3Table extends Migration
     {
         Schema::create('subcategory_level3', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('subcategory_id');
             $table->string('name', 100)->nullable();
             $table->text('description')->nullable();
@@ -23,7 +22,6 @@ class CreateSubcategoryLevel3Table extends Migration
             $table->string('cover_image')->nullable();
             $table->tinyInteger('status')->nullable()->default('1')->comment('1- Active , 0- InActive');
             $table->tinyInteger('is_featured')->nullable()->default('0');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('subcategory_id')->references('id')->on('sub_categories')->onDelete('cascade');
             $table->timestamps();
         });
