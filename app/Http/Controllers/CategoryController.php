@@ -19,6 +19,7 @@ use App\Models\ProviderType;
 use Yajra\DataTables\DataTables;
 use League\CommonMark\Node\Block\Document as BlockDocument;
 use App\Models\NotificationTemplate;
+use App\Models\SubCategoryLevel3;
 
 class CategoryController extends Controller
 {
@@ -35,7 +36,8 @@ class CategoryController extends Controller
         $pageTitle = trans('messages.list_form_title',['form' => trans('messages.category')] );
         $auth_user = authSession();
         $assets = ['datatable'];
-        return view('category.index', compact('pageTitle','auth_user','assets','filter'));
+        $categories = Category::with('subcategories.subcategorieslevel3.subcategorieslevel4')->get();
+        return view('category.index', compact('pageTitle','auth_user','assets','filter','categories'));
     }
 
 
@@ -158,7 +160,7 @@ class CategoryController extends Controller
             $pageTitle = trans('messages.add_button_form',['form' => trans('messages.category')]);
             $categorydata = new Category;
         }
-        $categories = Category::with('subcategories.relatedSubcategory')->get();
+        $categories = Category::with('subcategories.subcategorieslevel3')->get();
         
         return view('category.create', compact('pageTitle' ,'categorydata' ,'auth_user','categories' ));
     }
@@ -308,6 +310,9 @@ class CategoryController extends Controller
             break;
             case 'subcategory': 
                 $InTrash = SubCategory::withTrashed()->whereIn('id', $ids)->whereNotNull('deleted_at')->get();
+            break;
+            case 'subcategorylevel3': 
+                $InTrash = SubCategoryLevel3::withTrashed()->whereIn('id', $ids)->whereNotNull('deleted_at')->get();
             break;
             case 'service': 
                 $InTrash = Service::withTrashed()->whereIn('id', $ids)->whereNotNull('deleted_at')->get();

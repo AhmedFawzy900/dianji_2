@@ -349,6 +349,15 @@ class HomeController extends Controller
 
                 $items = $items->get();
                 break;
+            case 'subcategory_level_3':
+                $items = \App\Models\SubCategoryLevel3::select('id', 'name as text')->where('status', 1);
+
+                if ($value != '') {
+                    $items->where('name', 'LIKE', '%' . $value . '%');
+                }
+
+                $items = $items->get();
+                break;
             case 'provider':
                 $items = \App\Models\User::select('id', 'display_name as text')
                     ->where('user_type', 'provider')

@@ -11,7 +11,7 @@
                         <div class="d-flex justify-content-between align-items-center p-3 flex-wrap gap-3">
                             <h5 class="font-weight-bold">{{ $pageTitle ?? trans('messages.list') }}</h5>
                             @if($auth_user->can('subcategory add'))
-                            <a href="{{ route('subcategory.create') }}" class="float-right mr-1 btn btn-sm btn-primary"><i class="fa fa-plus-circle"></i> {{ trans('messages.add_form_title',['form' => trans('messages.subcategory')  ]) }}</a>
+                            <a href="{{ route('subcategorylevel4.create') }}" class="float-right mr-1 btn btn-sm btn-primary"><i class="fa fa-plus-circle"></i> {{ trans('messages.add_form_title',['form' => trans('subcategory level 4')  ]) }}</a>
                             @endif
                         </div>
                         {{-- {{ $dataTable->table(['class' => 'table  w-100'],false) }} --}}
@@ -20,14 +20,13 @@
             </div>
         </div>
     </div>
-    <div class="row justify-content-end align-items-start">
-
-      <div class="card col-md-8" >
+    <div class="row justify-content-center align-items-start">
+      <div class="card col-md-8">
           <div class="card-body">
           <div class="row justify-content-between">
               <div>
                 <div class="col-md-12">
-                    <form action="{{ route('sub-bulk-action') }}" id="quick-action-form" class="form-disabled d-flex gap-3 align-items-center">
+                    <form action="{{ route('sub4-bulk-action') }}" id="quick-action-form" class="form-disabled d-flex gap-3 align-items-center">
                       @csrf
                     <select name="action_type" class="form-control select2" id="quick-action-type" style="width:100%" disabled>
                         <option value="">{{ __('messages.no_action') }}</option>
@@ -51,10 +50,10 @@
                       </select>
                   </div>
                   <button id="quick-action-apply" class="btn btn-primary" data-ajax="true"
-                  data--submit="{{ route('sub-bulk-action') }}"
+                  data--submit="{{ route('sub4-bulk-action') }}"
                   data-datatable="reload" data-confirmation='true'
-                  data-title="{{ __('subcategory',['form'=>  __('subcategory') ]) }}"
-                  title="{{ __('subcategory',['form'=>  __('subcategory') ]) }}"
+                  data-title="{{ __('subcategorylevel4',['form'=>  __('subcategorylevel4') ]) }}"
+                  title="{{ __('subcategorylevel4',['form'=>  __('subcategorylevel4') ]) }}"
                   data-message='{{ __("Do you want to perform this action??") }}' disabled>{{ __('messages.apply') }}</button>
               </div>
             
@@ -75,7 +74,7 @@
                 </div>
                  
                 <div class="table-responsive">
-                  <table id="datatable" class="table table-striped border">
+                  <table id="datatablelevel4" class="table table-striped border">
   
                   </table>
                 </div>
@@ -83,12 +82,11 @@
           </div>
       </div>
       @include('components.category-tree', ['categories' => $categories])
-     
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
 
-        window.renderedDataTable = $('#datatable').DataTable({
+        window.renderedDataTable = $('#datatablelevel4').DataTable({
                 processing: true,
                 serverSide: true,
                 autoWidth: false,
@@ -96,7 +94,7 @@
                 dom: '<"row align-items-center"><"table-responsive my-3" rt><"row align-items-center" <"col-md-6" l><"col-md-6" p>><"clear">',
                 ajax: {
                   "type"   : "GET",
-                  "url"    : '{{ route("subcategory.sub-index-data") }}',
+                  "url"    : '{{ route("subcategorylevel4.sub4-index-data") }}',
                   "data"   : function( d ) {
                     d.search = {
                       value: $('.dt-search').val()
@@ -111,7 +109,7 @@
                     {
                         name: 'check',
                         data: 'check',
-                        title: '<input type="checkbox" class="form-check-input" name="select_all_table" id="select-all-table" data-type="subcategory" onclick="selectAllTable(this)">',
+                        title: '<input type="checkbox" class="form-check-input" name="select_all_table" id="select-all-table" data-type="subcategorylevel4" onclick="selectAllTable(this)">',
                         exportable: false,
                         orderable: false,
                         searchable: false,
@@ -122,14 +120,9 @@
                         title: "{{ __('messages.name') }}"
                     },
                     {
-                        data:'category_id',
-                        name:'category_id',
-                        title: "{{ __('messages.category') }}"
-                    },
-                    {
-                      data:'related_subcategory',
-                      name:'related_subcategory',
-                      title: "{{ __('related_subcategory') }}"
+                        data:'subcategory_level3_id',
+                        name:'subcategory_level3_id',
+                        title: "{{ __('subcategory level3') }}"
                     },
                     {
                         data: 'is_featured',
@@ -149,7 +142,10 @@
                         title: "{{ __('messages.action') }}"
                     }
                     
-                ]
+                ],
+                language: {
+                            emptyTable: "No data available"
+                        }
                 
             });
       });

@@ -39,6 +39,6 @@ class SubCategory extends BaseModel implements HasMedia
 
     public function subcategorieslevel3()
     {
-        return $this->hasMany(SubCategoryLevel3::class);
+        return $this->hasMany(SubCategoryLevel3::class, 'subcategory_id', 'id');
     }
 }
