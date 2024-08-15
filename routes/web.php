@@ -43,6 +43,8 @@ use App\Http\Controllers\ProviderSlotController;
 use App\Http\Controllers\NotificationTemplatesController;
 use App\Http\Controllers\ServiceAddonController;
 use App\Http\Controllers\FrontendSettingController;
+use App\Http\Controllers\SubCategoryLevel3Controller;
+use App\Http\Controllers\SubCategoryLevel4Controller;
 use App\Http\Controllers\VerificationController;
 
 
@@ -101,7 +103,6 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::post('category-action',[CategoryController::class, 'action'])->name('category.action');
         Route::post('category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy.id');
         Route::post('check-in-trash', [CategoryController::class, 'check_in_trash'])->name('check-in-trash');
-
     });
 
     Route::group(['middleware' => ['permission:service list']], function () {
@@ -389,6 +390,22 @@ Route::group(['middleware' => ['auth', 'verified']], function()
         Route::post('sub-bulk-action', [SubCategoryController::class, 'bulk_action'])->name('sub-bulk-action');
         Route::post('subcategory-action',[SubCategoryController::class, 'action'])->name('subcategory.action');
         Route::post('subcategory/{id}', [SubCategoryController::class, 'destroy'])->name('subcategory.destroy.id');
+    });
+    // for level 3
+    Route::group(['middleware' => ['permission:subcategory list']], function () {
+        Route::resource('subcategorylevel3', SubCategoryLevel3Controller::class);
+        Route::get('sub3-index-data',[SubCategoryLevel3Controller::class,'index_data'])->name('subcategorylevel3.sub3-index-data');
+        Route::post('sub3-bulk-action', [SubCategoryLevel3Controller::class, 'bulk_action'])->name('sub3-bulk-action');
+        Route::post('subcategorylevel3-action',[SubCategoryLevel3Controller::class, 'action'])->name('subcategorylevel3.action');
+        Route::post('subcategorylevel3/{id}', [SubCategoryLevel3Controller::class, 'destroy'])->name('subcategorylevel3.destroy.id');
+    });
+    // for level 4
+    Route::group(['middleware' => ['permission:subcategory list']], function () {
+        Route::resource('subcategorylevel4', SubCategoryLevel4Controller::class);
+        Route::get('sub4-index-data',[SubCategoryLevel4Controller::class,'index_data'])->name('subcategorylevel4.sub4-index-data');
+        Route::post('sub4-bulk-action', [SubCategoryLevel4Controller::class, 'bulk_action'])->name('sub4-bulk-action');
+        Route::post('subcategorylevel4-action',[SubCategoryLevel4Controller::class, 'action'])->name('subcategorylevel4.action');
+        Route::post('subcategorylevel4/{id}', [SubCategoryLevel4Controller::class, 'destroy'])->name('subcategorylevel4.destroy.id');
     });
 
     Route::resource('plans', PlanController::class);

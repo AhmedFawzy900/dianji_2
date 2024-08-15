@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SubCategory;
 use App\Http\Requests\SubCategoryRequest;
+use App\Models\Category;
 use Facade\Ignition\QueryRecorder\Query;
 use Yajra\DataTables\DataTables;
 
@@ -23,7 +24,8 @@ class SubCategoryController extends Controller
         $pageTitle = trans('messages.list_form_title',['form' => trans('messages.subcategory')] );
         $auth_user = authSession();
         $assets = ['datatable'];
-        return view('subcategory.index',compact('pageTitle','auth_user','assets','filter'));
+        $categories = Category::with('subcategories.subcategorieslevel3')->get();
+        return view('subcategory.index',compact('pageTitle','auth_user','assets','filter','categories'));
     }
 
     public function index_data(DataTables $datatable,Request $request)
@@ -164,7 +166,8 @@ class SubCategoryController extends Controller
             $subcategory = new SubCategory;
         }
         $allSubcategories = SubCategory::all();
-        return view('subcategory.create', compact('pageTitle' ,'subcategory' ,'auth_user','allSubcategories' ));
+        $categories = Category::with('subcategories.subcategorieslevel3.subcategorieslevel4')->get();
+        return view('subcategory.create', compact('pageTitle' ,'subcategory' ,'auth_user','allSubcategories','categories' ));
     }
 
     /**

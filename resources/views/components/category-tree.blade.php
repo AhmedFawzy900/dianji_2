@@ -1,4 +1,7 @@
 <div class="col-md-4">
+    @php
+        // dd($categories->toArray());
+    @endphp
     <div class="card">
         <div class="card-body">
             <h2 class="card-title">Categories</h2>
@@ -12,10 +15,21 @@
                                 @foreach ($category->subcategories as $subcategory)
                                     <li>
                                         <span>{{ $subcategory->name }}</span>
-                                        @if ($subcategory->subsubcategories !== null)
+                                        @if ($subcategory->subcategorieslevel3 !== null)
                                             <ul>
-                                                @foreach ($subcategory->subsubcategories as $relatedSubcategory)
-                                                    <li><span>{{ $relatedSubcategory->name }}</span></li>
+                                                @foreach ($subcategory->subcategorieslevel3 as $subcategorieslevel3)
+                                                    <li>
+                                                        <span>{{ $subcategorieslevel3->name }}</span>
+                                                        @if ($subcategorieslevel3->subcategorieslevel4 !== null)
+                                                            <ul>
+                                                                @foreach ($subcategorieslevel3->subcategorieslevel4 as $subcategorieslevel4)
+                                                                    <li>
+                                                                        <span>{{ $subcategorieslevel4->name }}</span>
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        @endif
+                                                    </li>
                                                 @endforeach
                                             </ul>
                                         @endif
