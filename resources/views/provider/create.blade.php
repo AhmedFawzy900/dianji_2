@@ -5,9 +5,9 @@
                 <div class="card card-block card-stretch">
                     <div class="card-body p-0">
                         <div class="d-flex justify-content-between align-items-center p-3 flex-wrap gap-3">
-                            <h5 class="font-weight-bold">{{ $pageTitle ?? __('messages.list') }}</h5>
+                            <h5 class="font-weight-bold">اصافة مزود خدمة</h5>
                             <a href="{{ route('provider.index') }}" class="float-right btn btn-sm btn-primary"><i
-                                    class="fa fa-angle-double-left"></i> {{ __('messages.back') }}</a>
+                                    class="fa fa-angle-double-left"></i> {{ __('رجوع') }}</a>
                             @if($auth_user->can('provider list'))
                             @endif
                         </div>
@@ -22,109 +22,109 @@
                         {{ Form::hidden('user_type','provider') }}
                         <div class="row">
                             <div class="form-group col-md-4">
-                                {{ Form::label('first_name',__('messages.first_name').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-                                {{ Form::text('first_name',old('first_name'),['placeholder' => __('messages.first_name'),'class' =>'form-control','required']) }}
+                                {{ Form::label('first_name',__('الاسم الاول').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
+                                {{ Form::text('first_name',old('first_name'),['placeholder' => __('الاسم الاول'),'class' =>'form-control','required']) }}
                                 <small class="help-block with-errors text-danger"></small>
                             </div>
 
                             <div class="form-group col-md-4">
-                                {{ Form::label('last_name',__('messages.last_name').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-                                {{ Form::text('last_name',old('last_name'),['placeholder' => __('messages.last_name'),'class' =>'form-control','required']) }}
+                                {{ Form::label('last_name',__('الاسم الاخير').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
+                                {{ Form::text('last_name',old('last_name'),['placeholder' => __('الاسم الاخير'),'class' =>'form-control','required']) }}
                                 <small class="help-block with-errors text-danger"></small>
                             </div>
 
                             <div class="form-group col-md-4">
-                                {{ Form::label('username',__('messages.username').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-                                {{ Form::text('username',old('username'),['placeholder' => __('messages.username'),'class' =>'form-control','required']) }}
+                                {{ Form::label('username',__(' الاسم المستخدم').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
+                                {{ Form::text('username',old('username'),['placeholder' => __('الاسم المستخدم'),'class' =>'form-control','required']) }}
                                 <small class="help-block with-errors text-danger"></small>
                             </div>
 
                             <div class="form-group col-md-4">
-                                {{ Form::label('email', __('messages.email').' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
-                                {{ Form::email('email', old('email'), ['placeholder' => __('messages.email'), 'class' => 'form-control', 'required', 'pattern' => '[^@]+@[^@]+\.[a-zA-Z]{2,}', 'title' => 'Please enter a valid email address']) }}
+                                {{ Form::label('email', __('الايميل').' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
+                                {{ Form::email('email', old('email'), ['placeholder' => __('الايميل'), 'class' => 'form-control', 'required', 'pattern' => '[^@]+@[^@]+\.[a-zA-Z]{2,}', 'title' => 'Please enter a valid email address']) }}
                                 <small class="help-block with-errors text-danger"></small>
                             </div>
 
                             @if (!isset($providerdata->id) || $providerdata->id == null)
                             <div class="form-group col-md-4">
-                                {{ Form::label('password', __('messages.password').' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
-                                {{ Form::password('password', ['class' => 'form-control', 'placeholder' => __('messages.password'), 'required', 'autocomplete' => 'new-password']) }}
+                                {{ Form::label('password', __('كلمة السر').' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
+                                {{ Form::password('password', ['class' => 'form-control', 'placeholder' => __('كلمة السر'), 'required', 'autocomplete' => 'new-password']) }}
                                 <small class="help-block with-errors text-danger"></small>
                             </div>
                             @endif
 
                             <div class="form-group col-md-4">
-                                {{ Form::label('designation',__('messages.designation'),['class'=>'form-control-label'], false ) }}
-                                {{ Form::text('designation',old('designation'),['placeholder' => __('messages.designation'),'class' =>'form-control']) }}
+                                {{ Form::label('designation',__('تعيين'),['class'=>'form-control-label'], false ) }}
+                                {{ Form::text('designation',old('designation'),['placeholder' => __('تعيين'),'class' =>'form-control']) }}
                                 <small class="help-block with-errors text-danger"></small>
                             </div>
                             <div class="form-group col-md-4">
-                                {{ Form::label('providertype_id', __('messages.select_name',[ 'select' => __('messages.providertype') ]).' <span class="text-danger">*</span>',['class'=>'form-control-label'],false) }}
+                                {{ Form::label('providertype_id', __("اختر نوع المزود").' <span class="text-danger">*</span>',['class'=>'form-control-label'],false) }}
                                 <br />
                                 {{ Form::select('providertype_id', [optional($providerdata->providertype)->id => optional($providerdata->providertype)->name], optional($providerdata->providertype)->id, [
                                         'class' => 'select2js form-group providertype',
                                         'required',
-                                        'data-placeholder' => __('messages.select_name',[ 'select' => __('messages.providertype') ]),
+                                        'data-placeholder' => __("اختر نوع المزود"),
                                         'data-ajax--url' => route('ajax-list', ['type' => 'providertype']),
                                     ]) }}
                             </div>
 
                             <div class="form-group col-md-4">
-                                {{ Form::label('country_id', __('messages.select_name',[ 'select' => __('messages.country') ]),['class'=>'form-control-label'],false) }}
+                                {{ Form::label('country_id', __("اختر الدولة").' <span class="text-danger">*</span>',['class'=>'form-control-label'],false) }}
                                 <br />
                                 {{ Form::select('country_id', [optional($providerdata->country)->id => optional($providerdata->country)->name], optional($providerdata->country)->id, [
                                         'class' => 'select2js form-group country',
-                                        'data-placeholder' => __('messages.select_name',[ 'select' => __('messages.country') ]),
+                                        'data-placeholder' => __("اختر الدولة"),
                                         'data-ajax--url' => route('ajax-list', ['type' => 'country']),
                                     ]) }}
                             </div>
 
                             <div class="form-group col-md-4">
-                                {{ Form::label('state_id', __('messages.select_name',[ 'select' => __('messages.state') ]),['class'=>'form-control-label'],false) }}
+                                {{ Form::label('state_id', __('اختر المنطقة'),['class'=>'form-control-label'],false) }}
                                 <br />
                                 {{ Form::select('state_id', [], [
                                         'class' => 'select2js form-group state_id',
-                                        'data-placeholder' => __('messages.select_name',[ 'select' => __('messages.state') ]),
+                                        'data-placeholder' => __('اختر المنطقة'),
                                     ]) }}
                             </div>
 
                             <div class="form-group col-md-4">
-                                {{ Form::label('city_id', __('messages.select_name',[ 'select' => __('messages.city') ]),['class'=>'form-control-label'],false) }}
+                                {{ Form::label('city_id', __('اختر المدينة'),['class'=>'form-control-label'],false) }}
                                 <br />
                                 {{ Form::select('city_id', [], old('city_id'), [
                                         'class' => 'select2js form-group city_id',
-                                        'data-placeholder' => __('messages.select_name',[ 'select' => __('messages.city') ]),
+                                        'data-placeholder' => __('اختر المدينة'),
                                     ]) }}
                             </div>
                             <div class="form-group col-md-4">
-                                {{ Form::label('name', __('messages.select_name',[ 'select' => __('messages.tax') ]),['class'=>'form-control-label'],false) }}
+                                {{ Form::label('name', __('الضريبة المضافة'),['class'=>'form-control-label'],false) }}
                                 <br />
                                 {{ Form::select('tax_id[]', [], old('tax_id'), [
                                         'class' => 'select2js form-group tax_id',
                                         'id' =>'tax_id',
                                         'multiple' => 'multiple',
-                                        'data-placeholder' => __('messages.select_name',[ 'select' => __('messages.tax') ]),
+                                        'data-placeholder' => __('الضريبة المضافة'),
                                     ]) }}
                                 
                             </div>
                             <div class="form-group col-md-4">
-                                {{ Form::label('contact_number',__('messages.contact_number').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-                                {{ Form::text('contact_number',old('contact_number'),['placeholder' => __('messages.contact_number'),'class' =>'form-control contact_number','required']) }}
+                                {{ Form::label('contact_number',__('رقم الاتصال').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
+                                {{ Form::text('contact_number',old('contact_number'),['placeholder' => __('رقم الاتصال'),'class' =>'form-control contact_number','required']) }}
                                 <small class="help-block with-errors text-danger" id="contact_number_err"></small>
                             </div>
 
                             <div class="form-group col-md-4">
-                                {{ Form::label('status',__('messages.status').' <span class="text-danger">*</span>',['class'=>'form-control-label'],false) }}
-                                {{ Form::select('status',['1' => __('messages.active') , '0' => __('messages.inactive') ],old('status'),[ 'class' =>'form-control select2js','required']) }}
+                                {{ Form::label('status',__('الحالة').' <span class="text-danger">*</span>',['class'=>'form-control-label'],false) }}
+                                {{ Form::select('status',['1' => __('نشط') , '0' => __('نشط') ],old('status'),[ 'class' =>'form-control select2js','required']) }}
                             </div>
 
                             <div class="form-group col-md-4">
-                                <label class="form-control-label" for="profile_image">{{ __('messages.profile_image') }}
+                                <label class="form-control-label" for="profile_image">{{ __('الصورة الشخصية') }}
                                 </label>
                                 <div class="custom-file">
                                     <input type="file" name="profile_image" class="custom-file-input" accept="image/*">
                                     <label
-                                        class="custom-file-label upload-label">{{  __('messages.choose_file',['file' =>  __('messages.profile_image') ]) }}</label>
+                                        class="custom-file-label upload-label">{{  __('اختر الصورة',['file' =>  __('الصورة الشخصية') ]) }}</label>
                                 </div>
                                 <!-- <span class="selected_file"></span> -->
                             </div>
@@ -146,8 +146,8 @@
                             @endif
 
                             <div class="form-group col-md-12">
-                                {{ Form::label('address',__('messages.address'), ['class' => 'form-control-label']) }}
-                                {{ Form::textarea('address', null, ['class'=>"form-control textarea" , 'rows'=>3  , 'placeholder'=> __('messages.address') ]) }}
+                                {{ Form::label('address',__('العنوان'), ['class' => 'form-control-label']) }}
+                                {{ Form::textarea('address', null, ['class'=>"form-control textarea" , 'rows'=>3  , 'placeholder'=> __('العنوان') ]) }}
                             </div>
                         </div>
                         <div class="row">
@@ -155,12 +155,12 @@
                                 <div class="custom-control custom-switch custom-control-inline ">
                                     {{ Form::checkbox('is_featured', $providerdata->is_featured, null, ['class' => 'custom-control-input' , 'id' => 'is_featured' ]) }}
                                     <label class="custom-control-label"
-                                        for="is_featured">{{ __('messages.set_as_featured')  }}
+                                        for="is_featured">{{ __('عنصر مميز')  }}
                                     </label>
                                 </div>
                             </div>
                         </div>
-                        {{ Form::submit( __('messages.save'), ['class'=>'btn btn-md btn-primary float-right']) }}
+                        {{ Form::submit( __('حفظ'), ['class'=>'btn btn-md btn-primary float-right']) }}
                         {{ Form::close() }}
                     </div>
                 </div>
