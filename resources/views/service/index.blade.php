@@ -57,12 +57,12 @@
 
           <div class="input-group ml-2">
             <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
-            <input type="text" class="form-control dt-search" placeholder="Search..." aria-label="Search"
+            <input type="text" class="form-control dt-search" placeholder="بحث..." aria-label="Search"
               aria-describedby="addon-wrapping" aria-controls="dataTableBuilder">
           </div>
           <div class="datatable-filter ml-auto">
             <select name="column_status" id="column_status" class="select2 form-control" data-filter="select"
-              style="width: 100%">
+              style="width: 80px">
               <option value="">{{ __('الكل') }}</option>
               <option value="0" {{$filter['status'] == '0' ? "selected" : ''}}>{{ __('غير نشط') }}</option>
               <option value="1" {{$filter['status'] == '1' ? "selected" : ''}}>{{ __('نشط') }}</option>

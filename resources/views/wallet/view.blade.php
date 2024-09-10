@@ -17,7 +17,7 @@
                                     
                                     <div class="input-group ml-auto">
                                         <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
-                                        <input type="text" class="form-control dt-search" placeholder="Search..." aria-label="Search" aria-describedby="addon-wrapping" aria-controls="dataTableBuilder">
+                                        <input type="text" class="form-control dt-search" placeholder="بحث..." aria-label="Search" aria-describedby="addon-wrapping" aria-controls="dataTableBuilder">
                                     </div>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@ window.renderedDataTable = $('#datatable').DataTable({
             {
                 name: 'DT_RowIndex',
                 data: 'DT_RowIndex',
-                title: "{{__('messages.no')}}",
+                title: "{{__('#')}}",
                 exportable: false,
                 orderable: false,
                 searchable: false,

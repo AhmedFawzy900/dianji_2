@@ -1,23 +1,36 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card card-block card-stretch">
+        <div class="card-body p-0">
+          <div class="d-flex justify-content-between align-items-center p-3">
+            <h5 class="font-weight-bold">{{ $pageTitle ?? trans('messages.list') }}</h5>
+          </div>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card card-block card-stretch">
-                    <div class="card-body p-0">
-                        <div class="d-flex justify-content-between align-items-center p-3">
-                            <h5 class="font-weight-bold">{{ $pageTitle ?? trans('messages.list') }}</h5>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
         </div>
+      </div>
     </div>
-    <div class="card">
-      <div class="card-body">
-        <div class="row justify-content-between">
-            <div>
-              <div class="col-md-12">
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="row justify-content-between">
+      <div class="d-flex justify-content-end">
+        <div class="input-group ml-2">
+          <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
+          <input type="text" class="form-control dt-search" placeholder="بحث..." aria-label="Search" aria-describedby="addon-wrapping" aria-controls="dataTableBuilder">
+        </div>
+        <div class="datatable-filter ml-auto">
+          <select name="column_status" id="column_status" class="select2 form-control" data-filter="select" style="width: 100%">
+            <option value="">{{__('messages.all')}}</option>
+            <option value="0" {{$filter['status'] == '0' ? "selected" : ''}}>{{__('messages.inactive')}}</option>
+            <option value="1" {{$filter['status'] == '1' ? "selected" : ''}}>{{__('messages.active')}}</option>
+          </select>
+        </div>
+
+      </div>
+      <div>
+        <!-- <div class="col-md-12">
 
               <form method="post" action="{{ route('notificationtemplate.bulk_action') }}" id="quick-action-form" class="form-disabled d-flex gap-3 align-items-center">
                     @csrf
@@ -45,100 +58,105 @@
                 data-message='{{ __("Do you want to perform this action?") }}' disabled>{{ __('messages.apply') }}</button>
             
           
-              </form>
-              </div>
-            </div>
-                <div class="d-flex justify-content-end">
-                    <div class="datatable-filter ml-auto">
-                      <select name="column_status" id="column_status" class="select2 form-control" data-filter="select" style="width: 100%">
-                        <option value="">{{__('messages.all')}}</option>
-                        <option value="0" {{$filter['status'] == '0' ? "selected" : ''}}>{{__('messages.inactive')}}</option>
-                        <option value="1" {{$filter['status'] == '1' ? "selected" : ''}}>{{__('messages.active')}}</option>
-                      </select>
-                    </div>
-                    <div class="input-group ml-2">
-                      <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
-                      <input type="text" class="form-control dt-search" placeholder="Search..." aria-label="Search" aria-describedby="addon-wrapping" aria-controls="dataTableBuilder">
-                    </div>
-                </div>
-                
-                <div class="table-responsive">
-                  <table id="datatable" class="table table-striped border">
-                  </table>
-                </div>
-        </div>
+              </form> -->
       </div>
     </div>
-  
 
 
-    <script>
-      $(document).ready(function(event){
+    <div class="table-responsive">
+      <table id="datatable" class="table table-striped border">
+      </table>
+    </div>
+  </div>
+</div>
+</div>
 
-        window.renderedDataTable = $('#datatable').DataTable({
-                processing: true,
-                serverSide: true,
-                autoWidth: false,
-                responsive: true,
-                dom: '<"row align-items-center"><"table-responsive my-3" rt><"row align-items-center" <"col-md-6" l><"col-md-6" p>><"clear">',
-                ajax: {
-                  "type"   : "GET",
-                  "url"    : '{{ route("notificationtemplates.index_data")}}',
-                  "data"   : function( d ) {
-                    d.search = {
-                      value: $('.dt-search').val()
-                    };
-                    d.filter = {
-                      column_status: $('#column_status').val()
-                    }
-                  },
-                },
-                columns: [
-                    {
-                        name: 'check',
-                        data: 'check',
-                        title: '<input type="checkbox" class="form-check-input" name="select_all_table" id="select-all-table" data-type="notificationtemplate" onclick="selectAllTable(this)">',
-                        exportable: false,
-                        orderable: false,
-                        searchable: false,
-                    },
-                    { data: 'id', name: 'id', title: "{{ __('messages.id') }}"  },
-                    { data: 'label', name: 'label', title: "{{ __('messages.label') }}"  },
-                    { data: 'type', name: 'type', title: "{{ __('messages.type') }}" },
-                    { data: 'status', name: 'status', orderable: false, searchable: true, title: "{{ __('messages.status') }}"  },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false,
-                        title: "{{__('messages.action')}}"
-                    }
-                    
-                ]
-                
-            });
-      });
 
-      function resetQuickAction() {
-   const actionValue = $('#quick-action-type').val();
 
-   if (actionValue != '') {
+<script>
+  $(document).ready(function(event) {
+
+    window.renderedDataTable = $('#datatable').DataTable({
+      processing: true,
+      serverSide: true,
+      autoWidth: false,
+      responsive: true,
+      dom: '<"row align-items-center"><"table-responsive my-3" rt><"row align-items-center" <"col-md-6" l><"col-md-6" p>><"clear">',
+      ajax: {
+        "type": "GET",
+        "url": '{{ route("notificationtemplates.index_data")}}',
+        "data": function(d) {
+          d.search = {
+            value: $('.dt-search').val()
+          };
+          d.filter = {
+            column_status: $('#column_status').val()
+          }
+        },
+      },
+      columns: [{
+          name: 'check',
+          data: 'check',
+          title: '<input type="checkbox" class="form-check-input" name="select_all_table" id="select-all-table" data-type="notificationtemplate" onclick="selectAllTable(this)">',
+          exportable: false,
+          orderable: false,
+          searchable: false,
+        },
+        {
+          data: 'id',
+          name: 'id',
+          title: "{{ __('messages.id') }}"
+        },
+        {
+          data: 'label',
+          name: 'label',
+          title: "{{ __('messages.label') }}"
+        },
+        {
+          data: 'type',
+          name: 'type',
+          title: "{{ __('messages.type') }}"
+        },
+        {
+          data: 'status',
+          name: 'status',
+          orderable: false,
+          searchable: true,
+          title: "{{ __('messages.status') }}"
+        },
+        {
+          data: 'action',
+          name: 'action',
+          orderable: false,
+          searchable: false,
+          title: "{{__('messages.action')}}"
+        }
+
+      ]
+
+    });
+  });
+
+  function resetQuickAction() {
+    const actionValue = $('#quick-action-type').val();
+
+    if (actionValue != '') {
       $('#quick-action-apply').removeAttr('disabled');
 
       if (actionValue == 'change-status') {
-         $('.quick-action-field').addClass('d-none');
-         $('#change-status-action').removeClass('d-none');
+        $('.quick-action-field').addClass('d-none');
+        $('#change-status-action').removeClass('d-none');
       } else {
-         $('.quick-action-field').addClass('d-none');
+        $('.quick-action-field').addClass('d-none');
       }
-   } else {
+    } else {
       console.log('Disabling Apply button');
       $('#quick-action-apply').attr('disabled', true);
       $('.quick-action-field').addClass('d-none');
-   }
-}
+    }
+  }
 
-  $('#quick-action-type').change(function () {
+  $('#quick-action-type').change(function() {
     resetQuickAction()
   });
 
@@ -146,31 +164,37 @@
 
   })
 
-  
-    $('#quick-action-form').on('submit', function(e) {
-        e.preventDefault()
-        const form = $(this)
-        const url = form.attr('action')
-        const message = form.find('button[data-ajax="true"]').data('message');
-        const rowdIds = $("#datatable_wrapper .select-table-row:checked").map(function() {
-            return $(this).val();
-        }).get();
-        
-    
-        confirmSwal(message).then((result) => {
-            if(!result.isConfirmed) return
-            callActionAjax({url: `${url}?rowIds=${rowdIds}`,body: form.serialize()})
-          })
-      
-      })
 
-      $(document).on('change', '#datatable_wrapper .switch-status-change', function() {
+  $('#quick-action-form').on('submit', function(e) {
+    e.preventDefault()
+    const form = $(this)
+    const url = form.attr('action')
+    const message = form.find('button[data-ajax="true"]').data('message');
+    const rowdIds = $("#datatable_wrapper .select-table-row:checked").map(function() {
+      return $(this).val();
+    }).get();
+
+
+    confirmSwal(message).then((result) => {
+      if (!result.isConfirmed) return
+      callActionAjax({
+        url: `${url}?rowIds=${rowdIds}`,
+        body: form.serialize()
+      })
+    })
+
+  })
+
+  $(document).on('change', '#datatable_wrapper .switch-status-change', function() {
     let url = $(this).attr('data-url')
     let body = {
       status: $(this).prop('checked') ? 1 : 0,
       _token: $(this).attr('data-token')
     }
-    callActionAjax({url: url, body: body})
+    callActionAjax({
+      url: url,
+      body: body
+    })
   })
 
   $(document).on('change', '#datatable_wrapper .change-select', function() {
@@ -179,10 +203,16 @@
       value: $(this).val(),
       _token: $(this).attr('data-token')
     }
-    callActionAjax({url: url, body: body})
+    callActionAjax({
+      url: url,
+      body: body
+    })
   })
 
-  function callActionAjax ({url, body}) {
+  function callActionAjax({
+    url,
+    body
+  }) {
     $.ajax({
       type: 'POST',
       url: url,
@@ -192,7 +222,11 @@
           const successMessage = res.message;
           showMessage(successMessage);
           window.renderedDataTable.ajax.reload(resetActionButtons, false)
-          const event = new CustomEvent('update_quick_action', {detail: {value: true}})
+          const event = new CustomEvent('update_quick_action', {
+            detail: {
+              value: true
+            }
+          })
           document.dispatchEvent(event)
         } else {
           Swal.fire({
@@ -204,12 +238,12 @@
       }
     })
   }
+
   function showMessage(message) {
     Snackbar.show({
-        text: message,
-        pos: 'bottom-center'
+      text: message,
+      pos: 'bottom-center'
     });
-}
-
-    </script>
-   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
