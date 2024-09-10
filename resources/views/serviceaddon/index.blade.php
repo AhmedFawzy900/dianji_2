@@ -9,8 +9,8 @@
                 <div class="card card-block card-stretch">
                     <div class="card-body p-0">
                         <div class="d-flex justify-content-between align-items-center p-3 flex-wrap gap-3">
-                            <h5 class="font-weight-bold">{{ $pageTitle ?? trans('messages.list') }}</h5>
-                            <a href="{{ route('serviceaddon.create') }}" class="float-right mr-1 btn btn-sm btn-primary "><i class="fa fa-plus-circle"></i> {{ __('messages.add_form_title',['form' => __('messages.service_addon')  ]) }}</a>
+                            <h5 class="font-weight-bold">‏قائمة الإضافات‏</h5>
+                            <a href="{{ route('serviceaddon.create') }}" class="float-right mr-1 btn btn-sm btn-primary "><i class="fa fa-plus-circle"></i>انشاء الإضافة</a>
                         </div>
                         
                     </div>
@@ -21,8 +21,23 @@
     <div class="card">
         <div class="card-body">
         <div class="row justify-content-between">
-            <div>
-              <div class="col-md-12">
+        <div class="d-flex justify-content-end">
+        <div class="input-group ml-2">
+                    <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
+                    <input type="text" class="form-control dt-search" placeholder="بحث..." aria-label="Search" aria-describedby="addon-wrapping" aria-controls="dataTableBuilder">
+                  </div>      
+        <div class="datatable-filter ml-auto">
+                  <select name="column_status" id="column_status" class="select2 form-control" data-filter="select" style="width: 100%">
+                    <option value="">{{ __('الكل') }}</option>
+                    <option value="0" {{$filter['status'] == '0' ? "selected" : ''}}>{{ __('غير نشط') }}</option>
+                    <option value="1" {{$filter['status'] == '1' ? "selected" : ''}}>{{ __('نشط') }}</option>
+                  </select>
+                </div>
+                
+              </div>
+                   
+        <div>
+              <!-- <div class="col-md-12">
               <form action="{{ route('serviceaddon.bulk-action') }}" id="quick-action-form" class="form-disabled d-flex gap-3 align-items-center">
                     @csrf
                   <select name="action_type" class="form-control select2" id="quick-action-type" style="width:100%" disabled>
@@ -46,22 +61,9 @@
                 data-message='{{ __("Do you want to perform this action?") }}' disabled>{{ __('messages.apply') }}</button>
             </div>
           
-            </form>
+            </form> -->
           </div>
-              <div class="d-flex justify-content-end">
-              <div class="datatable-filter ml-auto">
-                  <select name="column_status" id="column_status" class="select2 form-control" data-filter="select" style="width: 100%">
-                    <option value="">{{ __('messages.all') }}</option>
-                    <option value="0" {{$filter['status'] == '0' ? "selected" : ''}}>{{ __('messages.inactive') }}</option>
-                    <option value="1" {{$filter['status'] == '1' ? "selected" : ''}}>{{ __('messages.active') }}</option>
-                  </select>
-                </div>
-                <div class="input-group ml-2">
-                    <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
-                    <input type="text" class="form-control dt-search" placeholder="Search..." aria-label="Search" aria-describedby="addon-wrapping" aria-controls="dataTableBuilder">
-                  </div>
-              </div>
-               
+              
               <div class="table-responsive">
                 <table id="datatable" class="table table-striped border">
                   
@@ -104,29 +106,29 @@
                     {
                         data: 'name',
                         name: 'name',
-                        title: "{{ __('messages.name') }}"
+                        title: "{{ __('الاسم') }}"
                     },
                     {
                         data:'service_id',
                         name:'service_id',
-                        title:"{{ __('messages.service') }}"
+                        title:"{{ __('الخدمة') }}"
                     },
                     {
                         data:'price',
                         name:'price',
-                        title:"{{ __('messages.price') }}"
+                        title:"{{ __('السعر') }}"
                     },
                     {
                         data: 'status',
                         name: 'status',
-                        title: "{{ __('messages.status') }}"
+                        title: "{{ __('الحالة') }}"
                     },
                     {
                         data: 'action',
                         name: 'action',
                         orderable: false,
                         searchable: false,
-                        title: "{{ __('messages.action') }}"
+                        title: "{{ __('العمليات') }}"
                     }
                     
                 ]

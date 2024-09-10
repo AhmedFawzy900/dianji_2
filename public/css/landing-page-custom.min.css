@@ -1728,21 +1728,15 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, .h1 a, .h2 a, .h3 a, .h4 a, .h5 a, .h6 a {
   top: 0;
   left: 0;
   background: var(--bs-primary);
-  -webkit-clip-path: circle(0% at 100% 100%);
-          clip-path: circle(0% at 100% 100%);
-  transition: -webkit-clip-path 500ms ease;
+  clip-path: circle(0% at 100% 100%);
   transition: clip-path 500ms ease;
-  transition: clip-path 500ms ease, -webkit-clip-path 500ms ease;
   z-index: 0;
   border-radius: inherit;
 }
 
 .circle-clip-effect:hover::after,
 .swiper-slide-active .circle-clip-effect::after {
-  transition: -webkit-clip-path 500ms ease;
   transition: clip-path 500ms ease;
-  transition: clip-path 500ms ease, -webkit-clip-path 500ms ease;
-  -webkit-clip-path: circle(100%);
   clip-path: circle(100%);
 }
 

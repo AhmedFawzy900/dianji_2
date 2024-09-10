@@ -1342,13 +1342,11 @@
 [dir=rtl] .circle-clip-effect::after {
   right: 0;
   left: auto;
-  -webkit-clip-path: circle(0% at 0% 100%);
-          clip-path: circle(0% at 0% 100%);
+  clip-path: circle(0% at 0% 100%);
 }
 [dir=rtl] .circle-clip-effect:hover::after,
 [dir=rtl] .swiper-slide-active .circle-clip-effect::after {
-  -webkit-clip-path: circle(100%);
-          clip-path: circle(100%);
+  clip-path: circle(100%);
 }
 [dir=rtl] .iq-social-list-text li::after {
   left: 0;

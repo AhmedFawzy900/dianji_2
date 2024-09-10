@@ -1,5 +1,4 @@
-<?php 
-return [
+<?php return  array (
   'failed' => 'Queste credenziali non corrispondono ai nostri record.',
   'password' => 'Parola d\'ordine',
   'throttle' => 'Troppi tentativi di accesso. Si prega di riprovare in :seconds secondi.',
@@ -26,6 +25,5 @@ return [
   'privacy_policy' => 'politica sulla riservatezza',
   'create_account' => 'Creare un profilo',
   'enter_name' => 'Inserisci :name.',
-  'password_mismatch_error'=> 'La password e la conferma della password non corrispondono',
-
-];
+  'password_mismatch_error' => 'La password e la conferma della password non corrispondono',
+);

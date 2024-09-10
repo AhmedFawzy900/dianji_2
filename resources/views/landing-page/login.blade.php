@@ -99,7 +99,7 @@
                                         <div class="px-5 py-3 bg-primary">
                                             <ul class="iq-social-list-text d-flex align-items-center justify-content-center flex-wrap m-0 list-inline">
                                                 <li class="me-3 pe-3">
-                                                    <a href="{{ route('auth.login', ['email' => 'admin@admin.com', 'password' => '12345678']) }}" class="text-capitalize text-white">{{__('landingpage.admin')}}</a>
+                                                    <a href="{{ route('auth.login', ['email' => 'admin@admin.com', 'password' => 'admin123']) }}" class="text-capitalize text-white">{{__('landingpage.admin')}}</a>
                                                 </li>
                                                 <li class="me-3 pe-3">
                                                     <a href="{{ route('auth.login', ['email' => 'demo@provider.com', 'password' => '12345678']) }}" class="text-capitalize text-white">{{__('messages.provider')}}</a>

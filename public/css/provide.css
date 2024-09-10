@@ -2,30 +2,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
 
 :root {
-    --c1: #5F60B9;
-    --c2: #ff6767;
-    --bg-color: #f7f9fc;
-    --bg-color2: #eee;
-    --text-light-color: #758590;
-    --text-color: #4b5864;
-    --link-color: #5F60B9;
-    --input-border-color: #e4e4e4;
-    --input-border-color-active: rgba(65, 83, 179, 0.5);
-    --title-color: #212b36;
-    --title-color2: #758590;
-    --border-color: #dddddd;
-    --white-color: #ffffff;
-    --dark-color: #18181a;
-    --body-bg: #f5f5f5;
-    --absolute-dark: #18181a;
-    --absolute-white: #fff;
-    --mobile-search-bg: #ddd;
-    --shadow-color: rgba(0, 0, 0, 0.05);
-    --dropdown-menu-color: #ffffff;
-    --light-bg: #f7f9fc;
-    --c1-light-bg: rgba(65, 83, 179, 0.05);
-    --success-color: #16b559;
-    --timeline-color: #dcdcdc;
+    --c1: #276f63; /* Adjusted from the logo */
+    --c2: #ff6767; /* Kept as is for contrast */
+    --bg-color: #f7f9fc; /* Light background */
+    --bg-color2: #eee; /* Light secondary background */
+    --text-light-color: #758590; /* Light text */
+    --text-color: #4b5864; /* Darker text */
+    --link-color: #276f63; /* Matching logo color */
+    --input-border-color: #e4e4e4; /* Light border */
+    --input-border-color-active: rgba(39, 111, 99, 0.5); /* Active border with logo color */
+    --title-color: #212b36; /* Dark title */
+    --title-color2: #758590; /* Secondary title */
+    --border-color: #dddddd; /* Light border */
+    --white-color: #ffffff; /* White */
+    --dark-color: #18181a; /* Very dark color */
+    --body-bg: #f5f5f5; /* Light body background */
+    --absolute-dark: #18181a; /* Absolute dark */
+    --absolute-white: #fff; /* Absolute white */
+    --mobile-search-bg: #ddd; /* Mobile search background */
+    --shadow-color: rgba(0, 0, 0, 0.05); /* Shadow */
+    --dropdown-menu-color: #ffffff; /* Dropdown menu */
+    --light-bg: #f7f9fc; /* Light background */
+    --c1-light-bg: rgba(39, 111, 99, 0.05); /* Light background with logo color */
+    --success-color: #16b559; /* Success color */
+    --timeline-color: #dcdcdc; /* Timeline color */
+    
     --title-font: 'Work Sans', sans-serif;
     --body-font: 'Work Sans', sans-serif;
     --thin: 100;
@@ -49,23 +50,24 @@
 }
 
 [theme="dark"] {
-    --c1: #4153b3;
-    --bg-color: #39393b;
-    --dropdown-menu-color: #39393b;
-    --text-light-color: #758590;
-    --text-color: #ccd0d3;
-    --title-color: rgba(255, 255, 255, 0.9);
-    --title-color2: rgba(255, 255, 255, 0.7);
-    --border-color: #5d5d5d;
-    --white-color: #232325;
-    --dark-color: #fff;
-    --body-bg: #18181a;
-    --mobile-search-bg: #505050;
-    --shadow-color: rgba(255, 255, 255, 0.05);
-    --light-bg: #2a2a2a;
-    --c1-light-bg: rgba(65, 83, 179, 0.1);
-    --timeline-color: #484848;
+    --c1: #276f63; /* Teal color from logo */
+    --bg-color: #39393b; /* Dark background */
+    --dropdown-menu-color: #39393b; /* Dropdown menu matches background */
+    --text-light-color: #758590; /* Light text */
+    --text-color: #ccd0d3; /* Main text color */
+    --title-color: rgba(255, 255, 255, 0.9); /* Title color with opacity */
+    --title-color2: rgba(255, 255, 255, 0.7); /* Secondary title color */
+    --border-color: #5d5d5d; /* Border color */
+    --white-color: #232325; /* Off-white for dark mode */
+    --dark-color: #ffffff; /* White text on dark background */
+    --body-bg: #18181a; /* Body background */
+    --mobile-search-bg: #505050; /* Mobile search background */
+    --shadow-color: rgba(255, 255, 255, 0.05); /* Shadow color */
+    --light-bg: #2a2a2a; /* Light background in dark mode */
+    --c1-light-bg: rgba(39, 111, 99, 0.1); /* Light version of the logo color */
+    --timeline-color: #484848; /* Timeline color */
 }
+
 *,
 *::before,
 *::after {
@@ -608,7 +610,7 @@ ul a .count {
 .btn:focus ul a:focus,
 .btn:hover {
     color: var(--absolute-white);
-    background-color: #46479f;
+    background-color: var(--c1);
 }
 .btn--primary,
 .wizard .actions ul a {
@@ -984,7 +986,7 @@ a.btn-link-hover:hover {
 .statistics-card__collect-cash h2 {
     -webkit-margin-after: 1.875rem;
     margin-block-end: 1.875rem;
-    color: #4153b3;
+    color: var(--c1);
 }
 .statistics-card__collect-cash::after {
     background: linear-gradient(
@@ -1049,7 +1051,7 @@ a.btn-link-hover:hover {
     padding: 0.3em 1em;
 }
 .badge-primary .dot {
-    background-color: #4153b3;
+    background-color: var(--c1);
 }
 .badge-success,
 .table .badge-success {
@@ -2251,7 +2253,7 @@ h4.booking-text{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #5F60B9;
+    background-color: var(--c1);
     padding: 15px 20px;
 }
 .iq-sub-dropdown .notification_data .card-header .notify-title{
@@ -2267,7 +2269,9 @@ h4.booking-text{
 }
 .iq-top-navbar{
     background: #fff;
+    padding: 0 10px !important;
 }
+
 .dataTables_paginate .pagination .paginate_button.previous .page-link,
 .dataTables_paginate .pagination .paginate_button.next .page-link{
     font-size: 0;
@@ -2298,7 +2302,7 @@ table.dataTable{
 }
 .table thead th,
 .table tr th{
-    background:#5F60B9;
+    background:#3a928e;
     color:#fff;
 }
 .table thead th {
@@ -2310,21 +2314,21 @@ table.dataTable{
     line-height: normal;
     height: 40px;
 }
-table.dataTable > thead .sorting::after, table.dataTable > thead .sorting::before, table.dataTable > thead .sorting_asc::after, table.dataTable > thead .sorting_asc::before, table.dataTable > thead .sorting_asc_disabled::after, table.dataTable > thead .sorting_asc_disabled::before, table.dataTable > thead .sorting_desc::after, table.dataTable > thead .sorting_desc::before, table.dataTable > thead .sorting_desc_disabled::after, table.dataTable > thead .sorting_desc_disabled::before{
+/* table.dataTable > thead .sorting::after, table.dataTable > thead .sorting::before, table.dataTable > thead .sorting_asc::after, table.dataTable > thead .sorting_asc::before, table.dataTable > thead .sorting_asc_disabled::after, table.dataTable > thead .sorting_asc_disabled::before, table.dataTable > thead .sorting_desc::after, table.dataTable > thead .sorting_desc::before, table.dataTable > thead .sorting_desc_disabled::after, table.dataTable > thead .sorting_desc_disabled::before{
     top: 50%;
     bottom:auto;
     transform: translateY(-50%);
-}
+} */
 .setting-pills .nav-pills .nav-link{
     background-color: rgba(95, 96, 185, 0.1);
-    color:#5F60B9;
+    color:#479166;
     padding: 12px 16px;
     line-height: normal;
     display: block;
 }
 .setting-pills .nav-pills .nav-link.active,
 .setting-pills .nav-pills .nav-link:hover{
-    background-color: #5F60B9;
+    background-color: #199b95;
     color:#fff;
 }
 .setting-pills .nav-pills li{
@@ -2337,7 +2341,7 @@ table.dataTable > thead .sorting::after, table.dataTable > thead .sorting::befor
     padding:1.5em;
 }
 #permissionList .btn:hover {
-    background-color: #5F60B9;    
+    background-color: #199b95;    
 }
 #permissionList .btn:hover .permission-text{
     color:#fff;
@@ -2355,10 +2359,13 @@ table.dataTable > thead .sorting::after, table.dataTable > thead .sorting::befor
 .user-profile{
     display: flex;
     align-items: center;
-    margin:0 1rem 0.5rem;
-    padding: .9375rem .9375rem .9375rem 0;        
+    margin: 0 1rem 0.5rem;
+    padding: .9375rem .9375rem .9375rem 0;
     gap: 1rem;
     transition: all 0.1s ease-in;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
 }
 
 .user-profile .user-info{
@@ -2390,7 +2397,7 @@ body:not(.sidebar-main) .user-profile .avatar{
 }
 .nav-tabs .nav-link{
     background-color: rgba(95, 96, 185, 0.1);
-    color: #5F60B9;
+    color: #479166;
     padding: 12px 16px;
     line-height: normal;
     border-bottom: none;
@@ -2398,7 +2405,7 @@ body:not(.sidebar-main) .user-profile .avatar{
 }
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-link:hover{
-    background-color: #5F60B9;
+    background-color: #199b95;
     color: #fff;
 }
 .nav-tabs .nav-item{
@@ -2427,7 +2434,7 @@ body:not(.sidebar-main) .user-profile .avatar{
 }
 .provider-detail-tab .nav-item.active .nav-link,
 .provider-detail-tab .nav-item:hover .nav-link  {
-    background-color: #5F60B9;
+    background-color: #199b95;
     color: #fff;
 }
 .provider-detail-tab .nav-item .nav-link {
@@ -2520,6 +2527,8 @@ body:not(.sidebar-main) .user-profile .avatar{
 }
 .iq-sidebar-menu .side-menu li a span{
     white-space:normal;
+    margin-right: 7px;
+    font-size: 15px;
 }
 .iq-sidebar-menu .side-menu li a .iq-arrow-right{
     flex: none; 
@@ -2529,11 +2538,11 @@ body:not(.sidebar-main) .user-profile .avatar{
 }
 .iq-sidebar-menu .side-menu li:hover>a>svg.sidebar-menu-icon path,
 .iq-sidebar-menu .side-menu li.active>a>svg.sidebar-menu-icon path{
-    fill:#5F60B9;
+    fill:#409162;
 }
 .iq-sidebar-menu .side-menu li.active>a>svg.iq-arrow-right.arrow-active path,
 .iq-sidebar-menu .side-menu li:hover>a>svg.iq-arrow-right path{
-    stroke:#5F60B9;
+    stroke:#199b95;
 }
 .sidebar-default .iq-sidebar-menu .side-menu > li.active > a{
     background: rgba(95, 96, 185, 0.1);
@@ -2569,21 +2578,22 @@ table.data-table.provider-booking-data{
 .card.total-provider-card,
 .card.total-booking-card,
 .card.total-revenue{
-    background: #5F60B9;
+    background: var(--c1);
     opacity: 1;
+    overflow: visible;
 }
 .change-mode .custom-switch.custom-switch-icon label.custom-control-label:before {
-    border-color: #5F60B9;
+    border-color:  var(--c1-light-bg);
 }
 .change-mode .custom-switch.custom-switch-icon label.custom-control-label:after {
-    background-color: #5F60B9;
-    border-color: #5F60B9;
+    background-color: var(--c1);
+    border-color: var(--c1-light-bg);
 }
 .iq-card-icon.iq-card-icon-booking,
 .iq-card-icon.iq-card-icon-service,
 .iq-card-icon.iq-card-icon-provider,
 .iq-card-icon.iq-card-icon-revenue {
-    background: #46479f;
+    background: #519f94f2;
 }
 .iq-card-icon{
     display: inline-flex;
@@ -2592,7 +2602,7 @@ table.data-table.provider-booking-data{
 }
 .badge-pending{
     background: rgba(95, 96, 185, 0.1);
-    color: #5F60B9;
+    color:var(--c1);
 }
 .page-item.disabled .page-link{
     background-color: var(--body-bg);
@@ -2656,7 +2666,7 @@ select.booking-Status {
     background-color: #00000012;
     opacity: 1;
 }
-table.dataTable > thead .sorting:before,
+/* table.dataTable > thead .sorting:before,
 table.dataTable > thead .sorting_asc:before,
 table.dataTable > thead .sorting_asc_disabled:before,
 table.dataTable > thead .sorting_desc:before,
@@ -2670,7 +2680,7 @@ table.dataTable > thead .sorting_asc_disabled::after,
 table.dataTable > thead .sorting_desc::after,
 table.dataTable > thead .sorting_desc_disabled::after {
   right: 1.1em;
-}
+} */
 .select2-container--default .select2-selection--multiple .select2-selection__choice{
     padding: 0 6px 0 24px;
 }
@@ -2830,11 +2840,11 @@ table.dataTable > thead .sorting_desc_disabled::after {
     }
     body:not(.sidebar-main) .sidebar-default .iq-sidebar-menu .side-menu > li > a[aria-expanded="true"]{
         background: rgba(95, 96, 185, 0.1);
-        color: #5F60B9;
+        color: var(--c1);
     }
 
     body:not(.sidebar-main) .sidebar-default .iq-sidebar-menu .side-menu > li.active > a .iq-arrow-right path{
-        stroke: #5F60B9;
+        stroke: var(--c1-light-bg);
     }
     body:not(.sidebar-main) .iq-sidebar-menu .side-menu li ul.submenu {
         padding-left: 1.5rem;
@@ -2916,10 +2926,10 @@ table.dataTable > thead .sorting_desc_disabled::after {
     }
     body.sidebar-main .sidebar-default .iq-sidebar-menu .side-menu > li > a[aria-expanded="true"]{
         background: rgba(95, 96, 185, 0.1);
-        color: #5F60B9;
+        color: var(--c1-light);
     }
     body.sidebar-main .sidebar-default .iq-sidebar-menu .side-menu > li.active > a .iq-arrow-right path{
-        stroke: #5F60B9;
+        stroke: var(--c1-light-bg);
     }
     body.sidebar-main .iq-sidebar-menu .side-menu li ul.submenu {
         padding-left: 1.5rem;
@@ -2966,6 +2976,7 @@ table.dataTable > thead .sorting_desc_disabled::after {
     }
     .sidebar-default .iq-sidebar-menu .side-menu li.active .submenu li.active > a{
         background: rgba(95, 96, 185, 0.1);
+        padding: 10px;
     }
     .iq-sidebar-menu .side-menu li.category-main a{
         padding:0.8rem 1.5rem;
@@ -3049,6 +3060,7 @@ table.dataTable > thead .sorting_desc_disabled::after {
 [dir="rtl"] .iq-sidebar-menu .side-menu li a .iq-arrow-right{
     margin-right: auto;
     margin-left: 0;
+    fill: teal;
 }
 [dir="rtl"] .dropdown-menu-right {
     right: auto;
@@ -3274,7 +3286,7 @@ table.dataTable > thead .sorting_desc_disabled::after {
     border-top: 1px solid #252525 !important;
 }
 .dark a.btn-link-hover:hover span{
-    color: #5F60B9;
+    color: var(--c1);
 }
 .dark .iq-sidebar-menu .side-menu li.category-main a,
 .dark .nav--tabs .nav-link{
@@ -3314,10 +3326,10 @@ table.dataTable > thead .sorting_desc_disabled::after {
     stroke: #8F9FBC;
 }
 .dark  .iq-sidebar-menu .side-menu li ul.submenu li:hover .nav-link span{
-    color:#5F60B9;
+    color:var(--c1);
 }
 .dark .iq-sidebar-menu .side-menu li ul.submenu li.active .nav-link span {
-    color: #5F60B9;
+    color: var(--c1);
 }
 
 .dark .common-list .media-body span{
@@ -3333,8 +3345,8 @@ table.dataTable > thead .sorting_desc_disabled::after {
     color: #fff;
 }
 .dark .page-item.active .page-link{
-    background-color: #5F60B9;
-    border-color: #5F60B9;
+    background-color: var(--c1);
+    border-color: var(--c1);
 }
 .dark .pagination .page-item.disabled .page-link{
     opacity: 0.6;
@@ -3355,7 +3367,7 @@ table.dataTable > thead .sorting_desc_disabled::after {
 }
 .dark .nav-tabs .nav-link.active {
     color: #fff;
-    background-color:#5F60B9;
+    background-color:var(--c1-light-bg);
     border-color: transparent;
 }
 .dark .nav-tabs .nav-link:hover{
@@ -3365,7 +3377,7 @@ table.dataTable > thead .sorting_desc_disabled::after {
     color: #EFF0F1;
 }
 .dark table.dataTable .notify-table-link:hover{
-    color: #5F60B9;
+    color: var(--c1);
 }
 .dark ul.contact-list li .contact-info-text{
     color:#EFF0F1;
@@ -3378,7 +3390,7 @@ table.dataTable > thead .sorting_desc_disabled::after {
     color: #EFF0F1;
 }
 .dark .booking-service-link:hover{
-    color: #5F60B9;
+    color: var(--c1);
 }
 .dark .bk-summary-table{
     background-color: #222222;
@@ -3428,7 +3440,7 @@ table.dataTable > thead .sorting_desc_disabled::after {
     }
 }
 .badge-primary1 {
-    background: #5F60B9;
+    background: var(--c1-light-bg) !important;
     color: #fff !important;
 }
 

@@ -21,7 +21,7 @@ use App\Http\Controllers\CustomerController;
 require __DIR__.'/auth.php';
 
 Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
-Route::get('/login-page', [FrontendController::class, 'userLoginView'])->name('user.login');
+// Route::get('/login-page', [FrontendController::class, 'userLoginView'])->name('user.login');
 Route::post('/user-login', [CustomerController::class, 'userLogin'])->name('user.user_login');
 Route::get('/register-page', [FrontendController::class, 'userRegistrationView'])->name('user.register');
 Route::get('/provider-register', [FrontendController::class, 'partnerRegistrationView'])->name('partner.register');

@@ -5,9 +5,9 @@
                 <div class="card card-block card-stretch">
                     <div class="card-body p-0">
                         <div class="d-flex justify-content-between align-items-center p-3 flex-wrap gap-3">
-                            <h5 class="font-weight-bold">{{ $pageTitle ?? __('messages.list') }}</h5>
+                            <h5 class="font-weight-bold">الحجز</h5>
                             <a href="{{ route('booking.index') }}" class="float-right btn btn-sm btn-primary"><i
-                                    class="fa fa-angle-double-left"></i> {{ __('messages.back') }}</a>
+                                    class="fa fa-angle-double-left"></i> {{ __('الرجوع') }}</a>
                             @if ($auth_user->can('booking list'))
                             @endif
                         </div>
@@ -22,43 +22,43 @@
                         <div class="row">
                             <div class="form-group col-md-4">
 
-                                {{ Form::label('status', __('messages.select_name', ['select' => __('messages.status')]), ['class' => 'form-control-label']) }}
+                                {{ Form::label('status', __("حالة الحجز"), ['class' => 'form-control-label']) }}
                                 <br />
                                 {{ Form::select('status', $status, old('status'), ['id' => 'status', 'class' => 'form-control select2js booking_status']) }}
                             </div>
 
                             <div class="form-group col-md-4">
-                                {{ Form::label('date', __('messages.date') . ' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
-                                {{ Form::text('date', old('date'), ['placeholder' => __('messages.date'), 'class' => 'form-control datetimepicker', 'required']) }}
+                                {{ Form::label('date', __('التاريخ') . ' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
+                                {{ Form::text('date', old('date'), ['placeholder' => __('التاريخ'), 'class' => 'form-control datetimepicker', 'required']) }}
                                 <small class="help-block with-errors text-danger"></small>
                             </div>
                             <div class="form-group col-md-4">
-                                {{ Form::label('start_at', __('messages.start_at'), ['class' => 'form-control-label']) }}
-                                {{ Form::text('start_at', old('start_at'), ['placeholder' => __('messages.start_at'), 'class' => 'form-control datetimepicker']) }}
+                                {{ Form::label('start_at', __('موعد البدء'), ['class' => 'form-control-label']) }}
+                                {{ Form::text('start_at', old('start_at'), ['placeholder' => __('موعد البدء'), 'class' => 'form-control datetimepicker']) }}
                                 <small class="help-block with-errors text-danger"></small>
                             </div>
                             <div class="form-group col-md-4">
-                                {{ Form::label('end_at', __('messages.end_at'), ['class' => 'form-control-label']) }}
-                                {{ Form::text('end_at', old('end_at'), ['placeholder' => __('messages.end_at'), 'class' => 'form-control datetimepicker']) }}
+                                {{ Form::label('end_at', __('موعد الانتهاء'), ['class' => 'form-control-label']) }}
+                                {{ Form::text('end_at', old('end_at'), ['placeholder' => __('موعد الانتهاء'), 'class' => 'form-control datetimepicker']) }}
                                 <small class="help-block with-errors text-danger"></small>
                             </div>
                             <div class="form-group col-md-4">
-                                {{ Form::label('payment_status', __('messages.payment_status') . ' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
+                                {{ Form::label('payment_status', __('حالة الدفع') . ' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
                                 {{ Form::select('payment_status', ['pending' => __('messages.pending'), 'paid' => __('messages.paid'), 'failed' => __('messages.failed')], optional($bookingdata->payment)->payment_status, ['id' => 'payment_status', 'class' => 'form-control select2js', 'required']) }}
                             </div>
 
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
-                                {{ Form::label('description', __('messages.description'), ['class' => 'form-control-label']) }}
-                                {{ Form::textarea('description', null, ['class' => 'form-control textarea', 'rows' => 3, 'placeholder' => __('messages.description')]) }}
+                                {{ Form::label('description', __('الوصف'), ['class' => 'form-control-label']) }}
+                                {{ Form::textarea('description', null, ['class' => 'form-control textarea', 'rows' => 3, 'placeholder' => __('الوصف')]) }}
                             </div>
                             <div class="form-group col-md-6 reason">
-                                {{ Form::label('reason', __('messages.reason'), ['class' => 'form-control-label']) }}
-                                {{ Form::textarea('reason', null, ['class' => 'form-control textarea', 'rows' => 3, 'placeholder' => __('messages.reason')]) }}
+                                {{ Form::label('reason', __('السبب'), ['class' => 'form-control-label']) }}
+                                {{ Form::textarea('reason', null, ['class' => 'form-control textarea', 'rows' => 3, 'placeholder' => __('السبب')]) }}
                             </div>
                         </div>
-                        {{ Form::submit(__('messages.save'), ['class' => 'btn btn-md btn-primary float-right']) }}
+                        {{ Form::submit(__('حفظ'), ['class' => 'btn btn-md btn-primary float-right']) }}
                         {{ Form::close() }}
                     </div>
                 </div>

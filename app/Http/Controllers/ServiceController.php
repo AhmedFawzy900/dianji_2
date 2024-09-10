@@ -200,13 +200,13 @@ class ServiceController extends Controller
 
             if ($digital_services == 1) {
                 $visittype = [
-                    'ONLINE' => 'Online',
-                    'INDOOR' => 'Indoor',
-                    'OUTDOOR' => 'Outdoor',
+                    'ONLINE' => 'اون لاين',
+                    'INDOOR' => 'في المكان',
+                    'OUTDOOR' => 'في الخارج',
                 ];
             } else {
                 $visittype = [
-                    'ONLINE' => 'Online',
+                    'ONLINE' => 'اون لاين',
                 ];
             }
 

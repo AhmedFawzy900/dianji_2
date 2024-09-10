@@ -4,7 +4,7 @@
         <div class="col-lg-12">
             <ul class="nav nav-tabs nav-fill tabslink payment-view-tabs" id="tab-text" role="tablist">
                 <li class="nav-item payment-link">
-                    <a href="javascript:void(0)" data-href="{{ route('booking_layout_page',$bookingdata->id) }}?tabpage=info" data-target=".payment_paste_here" data-toggle="tabajax" class="nav-link  {{$tabpage=='info'?'active':''}}" rel="tooltip"> {{ __('messages.info') }}</a>
+                    <a href="javascript:void(0)" data-href="{{ route('booking_layout_page',$bookingdata->id)}}?tabpage=info" data-target=".payment_paste_here" data-toggle="tabajax" class="nav-link  {{$tabpage=='info'?'active':''}}" rel="tooltip"> {{ __('messages.info') }}</a>
                 </li>
                 <li class="nav-item payment-link">
                     <a href="javascript:void(0)" data-href="{{ route('booking_layout_page',$bookingdata->id) }}?tabpage=status" data-target=".payment_paste_here" data-toggle="tabajax" class="nav-link  {{$tabpage=='status'?'active':''}}" rel="tooltip"> {{__('messages.status')}}</a>
@@ -39,10 +39,11 @@
 
             $this.tab('show');
         });
-         $('.payment_paste_here').on('change','.booking-Status',function(){
-            $.post("{{ route('bookingStatus.update') }}", {
+        $('.payment_paste_here').on('change','.booking-Status',function(){
+            var bookingId = "{{ request()->booking }}";
+            $.post("{{ route('bookingStatus.update', ':id') }}".replace(':id', bookingId), {
                 '_token': $('meta[name=csrf-token]').attr('content'), 
-                bookingId:"{{ request()->booking }}",
+                bookingId: bookingId,
                 status: $(this).val(),
                 type: $(this).attr("type"),
             }, function(data) {

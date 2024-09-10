@@ -5,8 +5,8 @@
             <div class="card card-block card-stretch">
                 <div class="card-body p-0">
                     <div class="d-flex justify-content-between align-items-center p-3 flex-wrap gap-3">
-                        <h5 class="font-weight-bold">{{ $pageTitle ?? trans('messages.list') }}</h5>
-                        <a href="{{ route('serviceaddon.index') }}" class="float-right btn btn-sm btn-primary"><i class="fa fa-angle-double-left"></i> {{ __('messages.back') }}</a>
+                        <h5 class="font-weight-bold">انشاء اضافة</h5>
+                        <a href="{{ route('serviceaddon.index') }}" class="float-right btn btn-sm btn-primary"><i class="fa fa-angle-double-left"></i> {{ __('رجوع') }}</a>
                         @if($auth_user->can('service list'))
                        
                         @endif
@@ -21,13 +21,13 @@
                         {{ Form::hidden('id') }}
                         <div class="row">
                             <div class="form-group col-md-4">
-                                {{ Form::label('name', __('messages.name').' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
-                                {{ Form::text('name', old('name'), ['placeholder' => __('messages.name'), 'class' => 'form-control', 'title' => 'Please enter alphabetic characters and spaces only']) }}
+                                {{ Form::label('name', __('الاسم').' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
+                                {{ Form::text('name', old('name'), ['placeholder' => __('الاسم'), 'class' => 'form-control', 'title' => 'Please enter alphabetic characters and spaces only']) }}
                                 <small class="help-block with-errors text-danger"></small>
                             </div>
 
                             <div class="form-group col-md-4">
-                                {{ Form::label('name', __('messages.select_name',[ 'select' => __('messages.service') ]).' <span class="text-danger">*</span>',['class'=>'form-control-label'],false) }}
+                                {{ Form::label('name', __("الخدمة").' <span class="text-danger">*</span>',['class'=>'form-control-label'],false) }}
                                 <br />
                                 @php
                                     if($auth_user->user_type == 'admin')
@@ -42,22 +42,22 @@
                                         'class' => 'select2js form-group service',
                                         'id' => 'service_id',
                                         'required',
-                                        'data-placeholder' => __('messages.select_name',[ 'select' => __('messages.service') ]),
+                                        'data-placeholder' => __("اختر الخدمة"),
                                         'data-ajax--url' => $route,
                                 ]) }} 
                                 
                             </div>
                             <div class="form-group col-md-4">
-                                {{ Form::label('price', __('messages.price').' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
-                                {{ Form::text('price', null, [ 'placeholder' => __('messages.price'), 'class' =>'form-control', 'required', 'pattern' => '^\\d+(\\.\\d{1,2})?$']) }}
+                                {{ Form::label('price', __('السعر').' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
+                                {{ Form::text('price', null, [ 'placeholder' => __('السعر'), 'class' =>'form-control', 'required', 'pattern' => '^\\d+(\\.\\d{1,2})?$']) }}
                                 <small class="help-block with-errors text-danger"></small>
                             </div>
 
                             <div class="form-group col-md-4">
-                                <label class="form-control-label" for="serviceaddon_image">{{ __('messages.image') }}</label>
+                                <label class="form-control-label" for="serviceaddon_image">{{ __('صورة') }}</label>
                                 <div class="custom-file">
                                     <input type="file" name="serviceaddon_image" class="custom-file-input" accept="image/*">
-                                    <label class="custom-file-label upload-label">{{  __('messages.choose_file',['file' =>  __('messages.image') ]) }}</label>
+                                    <label class="custom-file-label upload-label">{{  __('اختر صورة') }}</label>
                                 </div>
                             </div>
 
@@ -84,13 +84,13 @@
                                 <small class="help-block with-errors text-danger"></small>
                             </div>  -->
                             <div class="form-group col-md-4">
-                                {{ Form::label('status',__('messages.status').' ',['class'=>'form-control-label'],false) }}
-                                {{ Form::select('status',['1' => __('messages.active') , '0' => __('messages.inactive') ],old('status'),[ 'id' => 'role' ,'class' =>'form-control select2js','required']) }}
+                                {{ Form::label('status',__('الحالة').' ',['class'=>'form-control-label'],false) }}
+                                {{ Form::select('status',['1' => __('نشط') , '0' => __('غير نشط') ],old('status'),[ 'id' => 'role' ,'class' =>'form-control select2js','required']) }}
                             </div>
 
                         </div>
 
-                        {{ Form::submit( __('messages.save'), ['class'=>'btn btn-md btn-primary float-right']) }}
+                        {{ Form::submit( __('حفظ'), ['class'=>'btn btn-md btn-primary float-right']) }}
                         {{ Form::close() }}
                 </div>
             </div>

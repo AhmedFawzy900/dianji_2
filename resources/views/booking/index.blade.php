@@ -12,7 +12,7 @@
                 <div class="card card-block card-stretch">
                     <div class="card-body p-0">
                         <div class="d-flex justify-content-between align-items-center p-3 flex-wrap gap-3">
-                            <h5 class="font-weight-bold">{{ $pageTitle ?? trans('messages.list') }}</h5>
+                            <h5 class="font-weight-bold">الحجوزات</h5>
                             @if ($auth_user->can('booking add'))
                                 <a href="{{ route('booking.create') }}" class="float-right mr-1 btn btn-sm btn-primary"><i
                                         class="fa fa-plus-circle"></i>
@@ -28,8 +28,17 @@
     <div class="card">
         <div class="card-body">
             <div class="row justify-content-between">
+                <div class="d-flex justify-content-end">
+
+                    <div class="input-group ml-2">
+                        <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
+                        <input type="text" class="form-control dt-search" placeholder="بحث..." aria-label="Search"
+                            aria-describedby="addon-wrapping" aria-controls="dataTableBuilder">
+                    </div>
+                </div>
+
                 <div>
-                    <div class="col-md-12">
+                    <!-- <div class="col-md-12">
                         <form action="{{ route('booking.bulk-action') }}" id="quick-action-form"
                             class="form-disabled d-flex gap-3 align-items-center">
                             @csrf
@@ -49,16 +58,9 @@
                                 disabled>{{ __('messages.apply') }}</button>
                     </div>
 
-                    </form>
+                    </form> -->
                 </div>
-                <div class="d-flex justify-content-end">
-
-                    <div class="input-group ml-2">
-                        <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
-                        <input type="text" class="form-control dt-search" placeholder="Search..." aria-label="Search"
-                            aria-describedby="addon-wrapping" aria-controls="dataTableBuilder">
-                    </div>
-                </div>
+                
 
                 <div class="table-responsive">
                     <table id="datatable" class="table table-striped border">
@@ -80,7 +82,7 @@
                 ajax: {
                     "type": "GET",
                     "url": '{{ route('booking.index_data') }}',
-                    "data": function(d) {
+                    "data": function (d) {
                         d.search = {
                             value: $('.dt-search').val()
                         };
@@ -90,77 +92,76 @@
                     },
                 },
                 columns: [{
-                        name: 'check',
-                        data: 'check',
-                        title: '<input type="checkbox" class="form-check-input" name="select_all_table" id="select-all-table" data-type="booking" onclick="selectAllTable(this)">',
-                        exportable: false,
-                        orderable: false,
-                        searchable: false,
-                    },
-                    {
-                        data: 'id',
-                        name: 'id',
-                        title: "{{ __('messages.id') }}"
-                    },
-                    {
-                        data: 'service_id',
-                        name: 'service_id',
-                        title: "{{ __('messages.service') }}"
-                    },
-                    {
-                        data: 'date',
-                        name: 'date',
-                        title: "{{ __('messages.booking_date') }}"
-                    },
-                    {
-                        data: 'customer_id',
-                        name: 'customer_id',
-                        title: "{{ __('messages.user') }}"
-                    },
-                    {
-                        data: 'provider_id',
-                        name: 'provider_id',
-                        title: "{{ __('messages.provider') }}"
-                    },
-                    {
-                        data: 'status',
-                        name: 'status',
-                        title: "{{ __('messages.status') }}"
-                    },
-                    {
-                        data: 'total_amount',
-                        name: 'total_amount',
-                        title: "{{ __('messages.total_amount') }}"
-                    },
-                    {
-                        data: 'payment_id',
-                        name: 'payment_id',
-                        title: "{{ __('messages.payment_status') }}"
-                    },
-                    {
-                        data: 'approval_alert',
-                        name: 'approval_alert',
-                        title: "Approval Alert"
-                    }, // New column for approval alert
-                    {
-                        data: 'time_exceeded_alert',
-                        name: 'time_exceeded_alert',
-                        title: "Time Exceeded Alert"
-                    }, // New column for time exceeded alert,
-                    {
-                        data: 'updated_at',
-                        name: 'updated_at',
-                        title: "{{ __('product.lbl_update_at') }}",
-                        orderable: true,
-                        visible: false,
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: true,
-                        searchable: true,
-                        title: "{{ __('messages.action') }}"
-                    },
+                    name: 'check',
+                    data: 'check',
+                    title: '<input type="checkbox" class="form-check-input" name="select_all_table" id="select-all-table" data-type="booking" onclick="selectAllTable(this)">',
+                    exportable: false,
+                    orderable: false,
+                    searchable: false,
+                },
+                {
+                    data: 'id',
+                    name: 'id',
+                    title: "{{ __('messages.id') }}"
+                },
+                {
+                    data: 'service_id',
+                    name: 'service_id',
+                    title: "{{ __('الخدمة') }}"
+                },
+                {
+                    data: 'customer_id',
+                    name: 'customer_id',
+                    title: "{{ __('العميل') }}"
+                },
+                {
+                    data: 'provider_id',
+                    name: 'provider_id',
+                    title: "{{ __('المزود') }}"
+                },
+                {
+                    data: 'status',
+                    name: 'status',
+                    title: "{{ __('الحالة') }}"
+                },
+                {
+                    data: 'approval_alert',
+                    name: 'approval_alert',
+                    title: "تنبيه الموافقة"
+                }, // New column for approval alert
+                {
+                    data: 'time_exceeded_alert',
+                    name: 'time_exceeded_alert',
+                    title: "تنبية تجاوز الوقت"
+                },{
+                    data: 'date',
+                    name: 'date',
+                    title: "{{ __('تاريخ الحجز') }}"
+                },
+                {
+                    data: 'total_amount',
+                    name: 'total_amount',
+                    title: "{{ __('السعر الكلي') }}"
+                },
+                {
+                    data: 'payment_id',
+                    name: 'payment_id',
+                    title: "{{ __('حالة الدفع') }}"
+                }, // New column for time exceeded alert,
+                {
+                    data: 'updated_at',
+                    name: 'updated_at',
+                    title: "{{ __("اخر تعديل") }}",
+                    orderable: true,
+                    visible: false,
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: true,
+                    searchable: true,
+                    title: "{{ __('العمليات') }}"
+                },
 
 
                 ],
@@ -191,13 +192,13 @@
             }
         }
 
-        $('#quick-action-type').change(function() {
+        $('#quick-action-type').change(function () {
             resetQuickAction()
         });
 
-        $(document).on('update_quick_action', function() {})
+        $(document).on('update_quick_action', function () { })
 
-        $(document).on('click', '[data-ajax="true"]', function(e) {
+        $(document).on('click', '[data-ajax="true"]', function (e) {
             //   e.preventDefault();
             const button = $(this);
             const confirmation = button.data('confirmation');

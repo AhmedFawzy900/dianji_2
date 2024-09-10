@@ -50,17 +50,8 @@ class BookingController extends Controller
     public function index_data(DataTables $datatable, Request $request)
     {
 
-        $query = Booking::query()->myBooking();
-
-
-        if (isset($filter)) {
-            if (isset($filter['column_status'])) {
-                $query->where('status', $filter['column_status']);
-            }
-        }
-        if (auth()->user()->hasAnyRole(['admin'])) {
-            $query->withTrashed();
-        }
+        $query = Booking::query()->myBooking()
+            ->orderByRaw('FIELD(status, "pending","pending_approval", "waiting","hold", "in_progress","on_going","accept","inprogress", "completed","rejected", "cancelled")');
 
         return $datatable->eloquent($query)
             ->addColumn('check', function ($row) {
@@ -446,7 +437,7 @@ class BookingController extends Controller
     public function edit($id)
     {
         $auth_user = authSession();
-
+        
         $bookingdata = Booking::myBooking()->find($id);
 
         $pageTitle = __('messages.update_form_title', ['form' => __('messages.booking')]);

@@ -669,8 +669,6 @@
         'unknown_user' => 'Unknown User',
         'subscription_added' => 'Subscription Added',
         'registeration_msg' => 'Register Successfully',
-
-
         'login_form' => 'Your account is already exists.',
         'deactivate' => 'Your account is deactivate.',
         'text'   => 'Text',

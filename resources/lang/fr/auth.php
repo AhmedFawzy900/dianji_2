@@ -1,5 +1,4 @@
-<?php 
-return [
+<?php return  array (
   'failed' => 'Ces informations d\'identification ne correspondent pas à nos archives.',
   'password' => 'Mot de passe',
   'throttle' => 'Trop de tentatives de connexion. Veuillez réessayer en :seconds secondes.',
@@ -26,6 +25,5 @@ return [
   'privacy_policy' => 'Politique de confidentialité',
   'create_account' => 'Créer un compte',
   'enter_name' => 'Entrez :name',
-  'password_mismatch_error'=> 'Le mot de passe et la confirmation du mot de passe ne correspondent pas',
-
-];
+  'password_mismatch_error' => 'Le mot de passe et la confirmation du mot de passe ne correspondent pas',
+);

@@ -41,7 +41,7 @@
                         <div class="col-xl-8 col-lg-10">
                             <div class="authontication-forms">
                                 <div class="text-center mb-5 pb-lg-5">
-                                    <h4 class="text-capitalize">{{__('auth.signup')}}</h4>
+                                    <h4 class="text-capitalize">{{__('انشاء حساب')}}</h4>
                                 </div>
                                 <div class="iq-login-form">
                                        <div class="alert alert-danger d-none" role="alert"  id="error">
@@ -118,8 +118,8 @@
                                     </form>
 
                                     <div class="text-center mt-4 text-signup">
-                                        <label class="m-0 text-capitalize">{{__('auth.already_have_account')}}</label>
-                                        <a href="{{route('user.login')}}" class="btn-link align-baseline ms-1">{{__('auth.sign_in')}}</a>
+                                        <label class="m-0 text-capitalize">{{__('لدى حساب ؟')}}</label>
+                                        <a href="{{route('user.login')}}" class="btn-link align-baseline ms-1">{{__('تسجيل الدخول')}}</a>
                                     </div>
 
                                 </div>

@@ -8,32 +8,33 @@
 */
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
 :root {
-  --blue: #4788ff;
-  --indigo: #6610f2;
-  --purple: #9A18FF;
-  --pink: #e83e8c;
-  --red: #e24b58;
-  --orange: #fe721c;
-  --yellow: #ffd600;
-  --green: #3cb72c;
-  --teal: #20c997;
-  --cyan: #19b3b3;
-  --white: #fff;
+  --blue: #276f63; /* Adjusted from the logo */
+  --indigo: #4c5a78;
+  --purple: #6f4678;
+  --pink: #b04560;
+  --red: #a23a32;
+  --orange: #cf7f36;
+  --yellow: #d2cc40;
+  --green: #276f63; /* Same as blue */
+  --teal: #276f63; /* Logo's main color */
+  --cyan: #4c7f7b;
+  --white: #ffffff;
   --gray: #6c757d;
   --gray-dark: #01041b;
-  --skyblue: #158df7;
-  --secondary: #8F9FBC;
-  --primary: #3378FF;
-  --secondary: #8F9FBC;
-  --success: #3cb72c;
-  --info: #19b3b3;
-  --warning: #db7e06;
-  --danger: #F42B3D;
-  --light: #c7cbd3;
+  --skyblue: #276f63; /* Replacing skyblue with the logo color */
+  --secondary: #6c757d;
+  --primary: #276f63; /* Primary color from logo */
+  --secondary: #6c757d;
+  --success: #276f63; /* Success color aligned with logo */
+  --info: #4c7f7b;
+  --warning: #d2cc40;
+  --danger: #a23a32;
+  --light: #f8f9fa;
   --dark: #01041b;
-  --orange: #fe721c;
-  --purple: #9A18FF;
-  --skyblue: #158df7;
+  --orange: #cf7f36;
+  --purple: #6f4678;
+  --skyblue: #276f63; /* Same as primary */
+  
   --breakpoint-xs: 0;
   --breakpoint-sm: 576px;
   --breakpoint-md: 768px;

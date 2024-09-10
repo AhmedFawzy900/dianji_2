@@ -15,7 +15,7 @@ class AddRelatedSubcategoryIdToSubCategoreiesTable extends Migration
     {
         Schema::table('sub_categories', function (Blueprint $table) {
             $table->unsignedBigInteger('related_subcategory_id')->nullable()->after('category_id');
-            $table->foreign('related_subcategory_id')->references('id')->on('sub_categoreies')->onDelete('set null');
+            // $table->foreign('related_subcategory_id')->references('id')->on('sub_categoreies')->onDelete('set null');
         });
     }
 

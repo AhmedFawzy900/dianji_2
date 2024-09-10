@@ -7,27 +7,27 @@ $datetime = $sitesetup ? json_decode($sitesetup->value) : null;
     <div class="row pb-1 gy-2">
         <div class="col-6 col-lg-3">
             <div>
-                <h4 class="c1 mb-2 pb-1">{{__('messages.book_placed')}}</h4>
+                <h4 class="c1 mb-2 pb-1">{{__('موعد الحجز')}}</h4>
                 <p class="opacity-75">{{ date("$datetime->date_format / $datetime->time_format", strtotime($bookingdata->created_at))}}</p>
             </div>
         </div>
         <div class="col-6 col-lg-3">
             <div>
-                <h4 class="c1  mb-2 pb-1">{{__('messages.booking_status')}}</h4>
+                <h4 class="c1  mb-2 pb-1">{{__('حالة الحجز')}}</h4>
                 <p class="opacity-75">{{  App\Models\BookingStatus::bookingStatus($bookingdata->status)}}</p>
                 <!-- <p class="opacity-75">{{ $bookingdata->status}}</p> -->
             </div>
         </div>
         <div class="col-6 col-lg-3">
             <div>
-                <h4 class="c1  mb-2 pb-1">{{__('messages.payment_status')}}</h4>
+                <h4 class="c1  mb-2 pb-1">{{__('حالة الدفع')}}</h4>
                 <p class="opacity-75">{{ ucwords(str_replace('_', ' ',  optional($bookingdata->payment)->payment_status ?: 'pending'))}}</p>
                 <!-- <p class="opacity-75">{{ optional($bookingdata->payment)->payment_status ?: 'pending' }}</p> -->
             </div>
         </div>
         <div class="col-6 col-lg-3">
             <div>
-                <h4 class="c1  mb-2 pb-1">{{__('messages.booking_amount')}}</h4>
+                <h4 class="c1  mb-2 pb-1">{{__('مجموع الدفع')}}</h4>
                 <p class="opacity-75">{{!empty($bookingdata->total_amount) ? getPriceFormat($bookingdata->total_amount + $extraValue ): 0}}</p>
             </div>
         </div>
@@ -40,17 +40,17 @@ $datetime = $sitesetup ? json_decode($sitesetup->value) : null;
             <div class="c1-light-bg radius-10 py-3 px-3">
                
                     @foreach($bookingdata->handymanAdded as $booking)
-                    <h4 class="mb-2">{{__('messages.handyman_information')}}</h4>
+                    <h4 class="mb-2">{{__('معلومات العامل')}}</h4>
                     <h5 class="c1 mb-3">{{optional($booking->handyman)->display_name ?? '-'}}</h5>
                     <ul class="list-info">
                         <li>
-                            <span class="material-icons customer-info-text">{{__('messages.phone_information')}}</span>
+                            <span class="material-icons customer-info-text">{{__('رقم الهاتف')}}</span>
                             <a href="tel:{{optional($booking->handyman)->contact_number}}" class="customer-info-value">
                                 <p class="mb-0">{{optional($booking->handyman)->contact_number ?? '-'}}</p>
                             </a>
                         </li>
                         <li>
-                            <span class="material-icons customer-info-text">{{__('messages.address')}}</span>
+                            <span class="material-icons customer-info-text">{{__('العنوان')}}</span>
                             <p class="customer-info-value">{{optional($booking->handyman)->address ?? '-'}}</p>
                         </li>
                     </ul>
@@ -59,17 +59,17 @@ $datetime = $sitesetup ? json_decode($sitesetup->value) : null;
             </div>
             @endif
             <div class="c1-light-bg radius-10 py-3 px-3">
-                <h4 class="mb-2">{{__('messages.provider_information')}}</h4>
+                <h4 class="mb-2">{{__('معلومات مقدم الخدمة')}}</h4>
                 <h5 class="c1 mb-3">{{optional($bookingdata->provider)->display_name ?? '-'}}</h5>
                 <ul class="list-info">
                     <li>
-                        <span class="material-icons customer-info-text">{{__('messages.phone_information')}}</span>
+                        <span class="material-icons customer-info-text">{{__('رقم الهاتف')}}</span>
                         <a href="tel:{{ optional($bookingdata->provider)->contact_number }}" class="customer-info-value">
                             <p class="mb-0">{{ optional($bookingdata->provider)->contact_number ?? '-' }}</p>
                         </a>
                     </li>
                     <li>
-                        <span class="material-icons customer-info-text">{{__('messages.address')}}</span>
+                        <span class="material-icons customer-info-text">{{__('العنوان')}}</span>
                         <p class="customer-info-value">{{ optional($bookingdata->provider)->address ?? '-' }}</p>
                     </li>
                 </ul>
